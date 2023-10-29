@@ -3269,17 +3269,6 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-camera"
-version = "0.0.0"
-dependencies = [
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "thiserror",
-]
-
-[[package]]
-name = "tauri-plugin-camera"
 version = "1.0.0"
 source = "git+https://github.com/tauri-apps/plugins-workspace?branch=feat/camera#ff86de7ce2ad6554a11e57c2c17100d342983f0c"
 dependencies = [
@@ -3693,7 +3682,7 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
- "tauri-plugin-camera 1.0.0",
+ "tauri-plugin-camera",
  "tauri-plugin-shell",
  "tauri-plugin-window",
 ]

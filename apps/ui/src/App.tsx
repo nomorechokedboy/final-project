@@ -1,8 +1,14 @@
-import { Show, createSignal } from "solid-js";
-import logo from "./assets/logo.svg";
-import { invoke } from "@tauri-apps/api/tauri";
 import "./App.css";
-import { getPhoto } from "@tauri-apps/plugin-camera";
+import Analytics from "./Analytics";
+import CameraIcon from "~icons/ion/camera-sharp";
+import ChartIcon from "~icons/gg/chart";
+import HomeIcon from "~icons/ic/baseline-home";
+import IntakeList from "./IntakeList";
+import LogoutIcon from "~icons/solar/logout-linear";
+import { A, Route, Routes } from "@solidjs/router";
+import { createSignal } from "solid-js";
+import { getPhoto } from "./camera";
+import { invoke } from "@tauri-apps/api/tauri";
 
 function App() {
   const userAgent = navigator.userAgent.toLowerCase();
@@ -20,8 +26,7 @@ function App() {
     console.log("Test log");
 
     try {
-      // const test = await getPhoto();
-      const { data, ...test } = await invoke("plugin:camera|getPhoto");
+      const { data, ...test } = await getPhoto();
       console.log(JSON.stringify(test));
     } catch (e) {
       console.error("Camera err: ", JSON.stringify(e));
@@ -29,43 +34,33 @@ function App() {
   }
 
   return (
-    <div class="container">
-      <h1>Welcome to Tauri mobile!</h1>
-
-      <div class="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" class="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" class="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://solidjs.com" target="_blank">
-          <img src={logo} class="logo solid" alt="Solid logo" />
-        </a>
-      </div>
-
-      <p>Click on the Tauri, Vite, and Solid logos to learn more.</p>
-
-      <form
-        class="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
-        />
-        <input type="file" name="" id="" />
-        <button type="submit">Greet</button>
-      </form>
-
-      <p>{greetMsg()}</p>
-      <Show when={isMobile}>
-        <button onClick={handleCamera}>Test</button>
-      </Show>
+    <div class="flex flex-col h-screen">
+      <header class="flex items-center flex-shrink-0 p-5">
+        <LogoutIcon />
+        <div class="flex-1 text-center">This app name</div>
+        <LogoutIcon />
+      </header>
+      <main class="flex-1 overflow-auto no-scrollbar">
+        <Routes>
+          <Route path="/" component={IntakeList} />
+          <Route path="/analytics" component={Analytics} />
+        </Routes>
+      </main>
+      <footer class="flex-shrink-0 flex items-center justify-between p-5">
+        <A href="/">
+          <div class="flex items-center flex-col gap-1">
+            <HomeIcon />
+          </div>
+        </A>
+        <div class="flex items-center flex-col gap-1">
+          <CameraIcon />
+        </div>
+        <A href="/analytics">
+          <div class="flex items-center flex-col gap-1">
+            <ChartIcon />
+          </div>
+        </A>
+      </footer>
     </div>
   );
 }

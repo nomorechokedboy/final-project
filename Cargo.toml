@@ -1,5 +1,5 @@
 [workspace]
-members = ["packages/tauri-plugin-camera", "apps/ui/src-tauri"]
+members = ["apps/ui/src-tauri"]
 
 [workspace.dependencies]
 serde = { version = "1", features = ["derive"] }

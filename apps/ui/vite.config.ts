@@ -1,13 +1,14 @@
 import { defineConfig } from "vite";
 import solidPlugin from "vite-plugin-solid";
 import { internalIpV4 } from "internal-ip";
+import Icons from "unplugin-icons/vite";
 
 // @ts-expect-error process is a nodejs global
 const mobile = !!/android|ios/.exec(process.env.TAURI_PLATFORM);
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
-  plugins: [solidPlugin()],
+  plugins: [solidPlugin(), Icons({ compiler: "solid" })],
 
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
