@@ -1,0 +1,3 @@
+[submodule "packages/plugins/camera"]
+	path = packages/plugins/camera
+	url = git@github.com:tauri-apps/plugins-workspace.git
