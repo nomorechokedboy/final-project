@@ -16,7 +16,6 @@
     "prettier": "^3.0.3",
     "prettier-plugin-organize-imports": "^3.2.3",
     "prettier-plugin-tailwindcss": "^0.5.6",
-    "tsconfig": "*",
     "turbo": "latest"
   },
   "name": "final-project",
