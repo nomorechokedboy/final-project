@@ -13,8 +13,8 @@ export default function IntakeList() {
               />
             </figure>
             <div class="card-body flex-[0.5]">
-              <h2 class="card-title">New movie is released!</h2>
-              <p>Click the button to watch on Jetflix app.</p>
+              <h2 class="card-title">Today intake</h2>
+              <p>This will be charts in the future</p>
             </div>
           </div>
         )}
