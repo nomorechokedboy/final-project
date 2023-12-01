@@ -1,0 +1,57 @@
+package serve
+
+import (
+	"api/src/server"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
+
+	_ "github.com/libsql/libsql-client-go/libsql"
+	"github.com/pocketbase/dbx"
+	"github.com/spf13/cobra"
+)
+
+func NewServeCommand() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "serve",
+		Args:  cobra.ArbitraryArgs,
+		Short: "Start the web server (default to 127.0.0.1:5005 if no domain is specified)",
+		Run: func(cmd *cobra.Command, args []string) {
+			log.Println("Serving dinner...")
+			dbURL := "libsql://turso-crm-nomorechokedboy.turso.io?authToken=eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJnaWQiOiI1OWQyMWEyYi03MjE3LTExZWUtOTRhOC1lNmQ5MDFkNTVjNzgiLCJpYXQiOiIyMDIzLTExLTMwVDAzOjQyOjQ1LjA0NDQyNjUxOFoifQ.oPtKUYrBGQkykPNe5qf2u3Fwzn0gfdt1hG8XIGNjcTwL-GDVHqr0lrJMLXePPoG0aCslmloVUZD9BV2BbLu2DA"
+			_, err := dbx.Open("libsql", dbURL)
+			if err != nil {
+				log.Panic("failed to connect database")
+			}
+
+			app := server.New()
+
+			go func() {
+				if err := app.Listen(":5005"); err != nil {
+					log.Panicf("App.Listen err: %v\n", err)
+				}
+			}()
+
+			c := make(chan os.Signal, 1)
+			signal.Notify(
+				c,
+				os.Interrupt,
+				syscall.SIGTERM,
+			)
+
+			_ = <-c
+			log.Println("Gracefully shutting down...")
+			_ = app.Shutdown()
+
+			log.Println("Running cleanup tasks...")
+
+			// Your cleanup tasks go here
+			// db.Close()
+			// redisConn.Close()
+			log.Println("Fiber was successful shutdown.")
+		},
+	}
+
+	return cmd
+}
