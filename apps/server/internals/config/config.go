@@ -7,7 +7,8 @@ type Database struct {
 }
 
 type Config struct {
-	Env string `env:"ENV" env-default:"dev"`
+	Env   string `env:"ENV"    env-default:"dev"`
+	DBURL string `env:"DB_URL"`
 }
 
 func New() (*Config, error) {

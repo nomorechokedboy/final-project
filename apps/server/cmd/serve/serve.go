@@ -1,6 +1,7 @@
 package serve
 
 import (
+	"api/internals/config"
 	"api/src/server"
 	"log"
 	"os"
@@ -19,8 +20,12 @@ func NewServeCommand() *cobra.Command {
 		Short: "Start the web server (default to 127.0.0.1:5005 if no domain is specified)",
 		Run: func(cmd *cobra.Command, args []string) {
 			log.Println("Serving dinner...")
-			dbURL := "libsql://turso-crm-nomorechokedboy.turso.io?authToken=eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJnaWQiOiI1OWQyMWEyYi03MjE3LTExZWUtOTRhOC1lNmQ5MDFkNTVjNzgiLCJpYXQiOiIyMDIzLTExLTMwVDAzOjQyOjQ1LjA0NDQyNjUxOFoifQ.oPtKUYrBGQkykPNe5qf2u3Fwzn0gfdt1hG8XIGNjcTwL-GDVHqr0lrJMLXePPoG0aCslmloVUZD9BV2BbLu2DA"
-			_, err := dbx.Open("libsql", dbURL)
+			cfg, err := config.New()
+			if err != nil {
+				log.Panicln("config.New err: ", err)
+			}
+
+			_, err = dbx.Open("libsql", cfg.DBURL)
 			if err != nil {
 				log.Panic("failed to connect database")
 			}
