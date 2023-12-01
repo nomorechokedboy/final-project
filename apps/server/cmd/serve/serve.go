@@ -2,7 +2,7 @@ package serve
 
 import (
 	"api/internals/config"
-	"api/src/server"
+	"api/internals/server"
 	"log"
 	"os"
 	"os/signal"

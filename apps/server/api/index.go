@@ -2,7 +2,7 @@ package handler
 
 import (
 	"api/internals/config"
-	"api/src/server"
+	"api/internals/server"
 	"log"
 	"net/http"
 
