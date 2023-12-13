@@ -5,17 +5,20 @@ import ChartIcon from "~icons/gg/chart";
 import HomeIcon from "~icons/ic/baseline-home";
 import IntakeList from "./IntakeList";
 import LogoutIcon from "~icons/solar/logout-linear";
-import { A, Route, Routes } from "@solidjs/router";
+import { A, Route, Routes, useNavigate } from "@solidjs/router";
 import { createSignal } from "solid-js";
 import { getPhoto } from "./camera";
 import { invoke } from "@tauri-apps/api/tauri";
+import SearchPage from "./SearchPage";
 
 function App() {
   const userAgent = navigator.userAgent.toLowerCase();
   const isMobile =
     userAgent.includes("android") || userAgent.includes("iphone");
   const [greetMsg, setGreetMsg] = createSignal("");
+  const [searchTerm, setSearchTerm] = createSignal("");
   const [name, setName] = createSignal("");
+  const navigate = useNavigate();
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -37,13 +40,28 @@ function App() {
     <div class="flex flex-col h-screen">
       <header class="flex items-center flex-shrink-0 p-5">
         <LogoutIcon />
-        <div class="flex-1 text-center">This app name</div>
+        <div class="flex-1 text-center">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              navigate(`/search?q=${searchTerm()}`);
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Type here"
+              class="input input-sm input-bordered input-primary w-full max-w-xs"
+              onChange={(e) => setSearchTerm(e.currentTarget.value)}
+            />
+          </form>
+        </div>
         <LogoutIcon />
       </header>
       <main class="flex-1 overflow-auto no-scrollbar">
         <Routes>
           <Route path="/" component={IntakeList} />
           <Route path="/analytics" component={Analytics} />
+          <Route path="/search" component={SearchPage} />
         </Routes>
       </main>
       <footer class="flex-shrink-0 flex items-center justify-between p-5">
