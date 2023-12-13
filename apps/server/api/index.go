@@ -19,7 +19,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		log.Panicln("config.New err: ", err)
 	}
 
-	db, err := dbx.Open("libsql", cfg.DBURL)
+	db, err := dbx.MustOpen("libsql", cfg.DBURL)
 	if err != nil {
 		panic("failed to connect database")
 	}

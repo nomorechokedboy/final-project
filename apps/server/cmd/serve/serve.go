@@ -25,7 +25,7 @@ func NewServeCommand() *cobra.Command {
 				log.Panicln("config.New err: ", err)
 			}
 
-			db, err := dbx.Open("libsql", cfg.DBURL)
+			db, err := dbx.MustOpen("libsql", cfg.DBURL)
 			if err != nil {
 				log.Panic("failed to connect database")
 			}
