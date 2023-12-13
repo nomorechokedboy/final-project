@@ -12,11 +12,10 @@ type FoodQuery struct {
 	Search string `json:"search"`
 }
 
-type Food struct {
-	Id                int     `json:"id"`
+type WriteFood struct {
 	Name              string  `json:"name"`
 	Calories          float64 `json:"calories"`
-	TotalFat          float64 `json:"total_fat"`
+	TotalFat          float64 `json:"totalFat"`
 	Saturated         float64 `json:"saturated"`
 	Cholesterol       float64 `json:"cholesterol"`
 	Sodium            float64 `json:"sodium"`
@@ -32,6 +31,11 @@ type Food struct {
 	Concentrated      int     `json:"concentrated"`
 	Fnvl              int     `json:"fnvl"`
 	Rate              float64 `json:"rate"`
+}
+
+type Food struct {
+	WriteFood
+	Id int `json:"id"`
 }
 
 var _ dbx.TableModel = Food{}

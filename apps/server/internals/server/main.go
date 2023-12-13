@@ -112,5 +112,67 @@ func New(db *dbx.DB) *fiber.App {
 		return c.JSON(resp)
 	})
 
+	v1.Post("/foods", func(c *fiber.Ctx) error {
+		body := new(food.WriteFood)
+		if err := c.BodyParser(body); err != nil {
+			log.Println("InsertFood.BodyParser err: ", err)
+			return fiber.ErrBadRequest
+		}
+
+		log.Printf("InsertFood request: %#v\n", body)
+		req := &food.Food{WriteFood: *body}
+		if err := db.Model(req).Insert(); err != nil {
+			log.Println("InsertFood.Insert err: ", err)
+			return fiber.ErrInternalServerError
+		}
+
+		log.Printf("InsertFood success. Response: %#v\n", body)
+
+		return c.JSON(body)
+	})
+
+	v1.Put("/foods/:id<int,min(1)>", func(c *fiber.Ctx) error {
+		body := new(food.WriteFood)
+		if err := c.BodyParser(body); err != nil {
+			log.Println("UpdateFood.BodyParser err: ", err)
+			return fiber.ErrBadRequest
+		}
+
+		id, err := c.ParamsInt("id")
+		if err != nil {
+			log.Println("UpdateFood.ParamsInt err: ", err)
+			return fiber.ErrBadRequest
+		}
+
+		log.Printf("UpdateFood request: %#v\n", body)
+		req := &food.Food{WriteFood: *body, Id: id}
+		if err := db.Model(req).Update(); err != nil {
+			log.Println("UpdateFood.Update err: ", err)
+			return fiber.ErrInternalServerError
+		}
+
+		log.Printf("UpdateFood success. Response: %#v\n", body)
+
+		return c.JSON(body)
+	})
+
+	v1.Delete("/foods/:id<int,min(1)>", func(c *fiber.Ctx) error {
+		id, err := c.ParamsInt("id")
+		if err != nil {
+			log.Println("DeleteFood.ParamsInt err: ", err)
+			return fiber.ErrBadRequest
+		}
+
+		req := &food.Food{Id: id}
+		if err := db.Model(req).Delete(); err != nil {
+			log.Println("DeleteFood.Delete err: ", err)
+			return fiber.ErrInternalServerError
+		}
+
+		log.Printf("DeleteFood success. Response: %#v\n", req)
+
+		return c.JSON(req)
+	})
+
 	return app
 }
