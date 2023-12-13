@@ -95,135 +95,135 @@ paths:
   /foods:
     get:
       consumes:
-        - application/json
+      - application/json
       description: Get list food nutrients and rate
       parameters:
-        - description: Page
-          in: query
-          name: page
-          type: integer
-        - description: Page Size
-          in: query
-          name: pageSize
-          type: integer
-        - default: desc
-          description: Sort direction
-          enum:
-            - asc
-            - desc
-          in: query
-          name: sort
-          type: string
-        - description: Search term
-          in: query
-          name: search
-          type: string
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: pageSize
+        type: integer
+      - default: desc
+        description: Sort direction
+        enum:
+        - asc
+        - desc
+        in: query
+        name: sort
+        type: string
+      - description: Search term
+        in: query
+        name: search
+        type: string
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/food.Food"
+            $ref: '#/definitions/food.Food'
         "500":
           description: Internal Server Error
           schema:
             type: string
       summary: Get list food details api
       tags:
-        - Food
+      - Food
     post:
       consumes:
-        - application/json
+      - application/json
       description: Insert food nutrients and rate for custom HSR
       parameters:
-        - description: Create food body
-          in: body
-          name: post
-          required: true
-          schema:
-            $ref: "#/definitions/food.WriteFood"
+      - description: Create food body
+        in: body
+        name: post
+        required: true
+        schema:
+          $ref: '#/definitions/food.WriteFood'
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/food.Food"
+            $ref: '#/definitions/food.Food'
         "500":
           description: Internal Server Error
           schema:
             type: string
       summary: Create food api
       tags:
-        - Food
+      - Food
   /foods/{id}:
     delete:
       consumes:
-        - application/json
+      - application/json
       description: Delete food nutrients and rate for custom HSR
       parameters:
-        - description: Food ID
-          in: path
-          name: id
-          required: true
-          type: integer
+      - description: Food ID
+        in: path
+        name: id
+        required: true
+        type: integer
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/food.Food"
+            $ref: '#/definitions/food.Food'
         "500":
           description: Internal Server Error
           schema:
             type: string
       summary: Delete food api
       tags:
-        - Food
+      - Food
     get:
       consumes:
-        - application/json
+      - application/json
       description: Get food nutrients and rate
       parameters:
-        - description: Food ID
-          in: path
-          name: id
-          required: true
-          type: integer
+      - description: Food ID
+        in: path
+        name: id
+        required: true
+        type: integer
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/food.Food"
+            $ref: '#/definitions/food.Food'
         "500":
           description: Internal Server Error
           schema:
             type: string
       summary: Get food details api
       tags:
-        - Food
+      - Food
     put:
       consumes:
-        - application/json
+      - application/json
       description: Update food nutrients and rate for custom HSR
       parameters:
-        - description: Update food body
-          in: body
-          name: post
-          required: true
-          schema:
-            $ref: "#/definitions/food.WriteFood"
-        - description: Food ID
-          in: path
-          name: id
-          required: true
-          type: integer
+      - description: Update food body
+        in: body
+        name: post
+        required: true
+        schema:
+          $ref: '#/definitions/food.WriteFood'
+      - description: Food ID
+        in: path
+        name: id
+        required: true
+        type: integer
       responses:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/food.Food"
+            $ref: '#/definitions/food.Food'
         "500":
           description: Internal Server Error
           schema:
             type: string
       summary: Update food api
       tags:
-        - Food
+      - Food
 swagger: "2.0"
