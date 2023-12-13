@@ -1,6 +1,8 @@
 package server
 
 import (
+	"api/internals/food"
+	"log"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -8,6 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/swagger"
+	"github.com/pocketbase/dbx"
 
 	_ "api/docs"
 )
@@ -45,7 +48,7 @@ func index(c *fiber.Ctx) error {
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 // @BasePath /api/v1
-func New() *fiber.App {
+func New(db *dbx.DB) *fiber.App {
 	app := fiber.New()
 
 	app.Use(recover.New())
@@ -55,6 +58,59 @@ func New() *fiber.App {
 	app.Get("/docs/*", swagger.HandlerDefault)
 	app.Get("/healthz", healthz)
 	app.Get("/", index)
+
+	v1 := app.Group("/api/v1")
+	v1.Get("/foods", func(c *fiber.Ctx) error {
+		query := &food.FoodQuery{}
+		if err := c.QueryParser(query); err != nil {
+			log.Println("GetFoods.QueryParser err: ", err)
+			return fiber.ErrBadRequest
+		}
+
+		log.Printf("GetFoods request: %#v\n", query)
+
+		resp := make([]food.Food, 0, query.GetPageSize())
+		q := db.Select("*").
+			From("food_rate_nutrients").
+			Offset(query.GetOffset()).
+			Limit(query.GetPageSize())
+		if query.Search != "" {
+			q = q.Where(dbx.Like("name", query.Search))
+		}
+
+		if err := q.All(&resp); err != nil {
+			log.Println("GetFoods.All err: ", err)
+			return fiber.ErrInternalServerError
+		}
+
+		log.Printf("GetFoods success. Response: %#v\n", resp)
+
+		return c.JSON(resp)
+	})
+
+	v1.Get("/foods/:id<int,min(1)>", func(c *fiber.Ctx) error {
+		id, err := c.ParamsInt("id")
+		if err != nil {
+			log.Println("GetFoodDetails.ParamsInt err: ", err)
+			return fiber.ErrBadRequest
+		}
+
+		log.Println("GetFoodDetails id: ", id)
+
+		resp := &food.Food{}
+		if err := db.Select().Model(id, resp); err != nil {
+			log.Println("GetFoodDetails.Query err: ", err)
+			if err.Error() == "sql: no rows in result set" {
+				return fiber.ErrNotFound
+			}
+
+			return fiber.ErrInternalServerError
+		}
+
+		log.Printf("GetFoodDetails success. Response: %#v\n", resp)
+
+		return c.JSON(resp)
+	})
 
 	return app
 }
