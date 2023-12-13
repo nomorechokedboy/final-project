@@ -2,8 +2,6 @@ package food
 
 import (
 	"api/internals/common"
-
-	"github.com/pocketbase/dbx"
 )
 
 type FoodQuery struct {
@@ -37,8 +35,6 @@ type Food struct {
 	WriteFood
 	Id int `json:"id"`
 }
-
-var _ dbx.TableModel = Food{}
 
 func (f Food) TableName() string {
 	return "food_rate_nutrients"

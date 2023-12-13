@@ -1,4 +1,229 @@
+basePath: /api/v1
+definitions:
+  food.Food:
+    properties:
+      calcium:
+        type: number
+      calories:
+        type: number
+      category:
+        type: string
+      cholesterol:
+        type: number
+      concentrated:
+        type: integer
+      fiber:
+        type: number
+      fnvl:
+        type: integer
+      id:
+        type: integer
+      iron:
+        type: number
+      name:
+        type: string
+      potassium:
+        type: number
+      protein:
+        type: number
+      rate:
+        type: number
+      saturated:
+        type: number
+      sodium:
+        type: number
+      sugar:
+        type: number
+      total_carbohydrate:
+        type: number
+      totalFat:
+        type: number
+      vitamin_d:
+        type: number
+    type: object
+  food.WriteFood:
+    properties:
+      calcium:
+        type: number
+      calories:
+        type: number
+      category:
+        type: string
+      cholesterol:
+        type: number
+      concentrated:
+        type: integer
+      fiber:
+        type: number
+      fnvl:
+        type: integer
+      iron:
+        type: number
+      name:
+        type: string
+      potassium:
+        type: number
+      protein:
+        type: number
+      rate:
+        type: number
+      saturated:
+        type: number
+      sodium:
+        type: number
+      sugar:
+        type: number
+      total_carbohydrate:
+        type: number
+      totalFat:
+        type: number
+      vitamin_d:
+        type: number
+    type: object
 info:
-  contact: {}
-paths: {}
+  contact:
+    email: fiber@swagger.io
+    name: API Support
+  description: This is a sample swagger for Fiber
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Fiber Example API
+  version: "1.0"
+paths:
+  /foods:
+    get:
+      consumes:
+        - application/json
+      description: Get list food nutrients and rate
+      parameters:
+        - description: Page
+          in: query
+          name: page
+          type: integer
+        - description: Page Size
+          in: query
+          name: pageSize
+          type: integer
+        - default: desc
+          description: Sort direction
+          enum:
+            - asc
+            - desc
+          in: query
+          name: sort
+          type: string
+        - description: Search term
+          in: query
+          name: search
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/food.Food"
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get list food details api
+      tags:
+        - Food
+    post:
+      consumes:
+        - application/json
+      description: Insert food nutrients and rate for custom HSR
+      parameters:
+        - description: Create food body
+          in: body
+          name: post
+          required: true
+          schema:
+            $ref: "#/definitions/food.WriteFood"
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/food.Food"
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create food api
+      tags:
+        - Food
+  /foods/{id}:
+    delete:
+      consumes:
+        - application/json
+      description: Delete food nutrients and rate for custom HSR
+      parameters:
+        - description: Food ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/food.Food"
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete food api
+      tags:
+        - Food
+    get:
+      consumes:
+        - application/json
+      description: Get food nutrients and rate
+      parameters:
+        - description: Food ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/food.Food"
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get food details api
+      tags:
+        - Food
+    put:
+      consumes:
+        - application/json
+      description: Update food nutrients and rate for custom HSR
+      parameters:
+        - description: Update food body
+          in: body
+          name: post
+          required: true
+          schema:
+            $ref: "#/definitions/food.WriteFood"
+        - description: Food ID
+          in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/food.Food"
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update food api
+      tags:
+        - Food
 swagger: "2.0"

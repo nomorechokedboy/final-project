@@ -1,7 +1,322 @@
 {
   "swagger": "2.0",
   "info": {
-    "contact": {}
+    "description": "This is a sample swagger for Fiber",
+    "title": "Fiber Example API",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "name": "API Support",
+      "email": "fiber@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0"
   },
-  "paths": {}
+  "basePath": "/api/v1",
+  "paths": {
+    "/foods": {
+      "get": {
+        "description": "Get list food nutrients and rate",
+        "consumes": ["application/json"],
+        "tags": ["Food"],
+        "summary": "Get list food details api",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Page",
+            "name": "page",
+            "in": "query"
+          },
+          {
+            "type": "integer",
+            "description": "Page Size",
+            "name": "pageSize",
+            "in": "query"
+          },
+          {
+            "enum": ["asc", "desc"],
+            "type": "string",
+            "default": "desc",
+            "description": "Sort direction",
+            "name": "sort",
+            "in": "query"
+          },
+          {
+            "type": "string",
+            "description": "Search term",
+            "name": "search",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/food.Food"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Insert food nutrients and rate for custom HSR",
+        "consumes": ["application/json"],
+        "tags": ["Food"],
+        "summary": "Create food api",
+        "parameters": [
+          {
+            "description": "Create food body",
+            "name": "post",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/food.WriteFood"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/food.Food"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/foods/{id}": {
+      "get": {
+        "description": "Get food nutrients and rate",
+        "consumes": ["application/json"],
+        "tags": ["Food"],
+        "summary": "Get food details api",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Food ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/food.Food"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "Update food nutrients and rate for custom HSR",
+        "consumes": ["application/json"],
+        "tags": ["Food"],
+        "summary": "Update food api",
+        "parameters": [
+          {
+            "description": "Update food body",
+            "name": "post",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/food.WriteFood"
+            }
+          },
+          {
+            "type": "integer",
+            "description": "Food ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/food.Food"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete food nutrients and rate for custom HSR",
+        "consumes": ["application/json"],
+        "tags": ["Food"],
+        "summary": "Delete food api",
+        "parameters": [
+          {
+            "type": "integer",
+            "description": "Food ID",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/food.Food"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "food.Food": {
+      "type": "object",
+      "properties": {
+        "calcium": {
+          "type": "number"
+        },
+        "calories": {
+          "type": "number"
+        },
+        "category": {
+          "type": "string"
+        },
+        "cholesterol": {
+          "type": "number"
+        },
+        "concentrated": {
+          "type": "integer"
+        },
+        "fiber": {
+          "type": "number"
+        },
+        "fnvl": {
+          "type": "integer"
+        },
+        "id": {
+          "type": "integer"
+        },
+        "iron": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "potassium": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "rate": {
+          "type": "number"
+        },
+        "saturated": {
+          "type": "number"
+        },
+        "sodium": {
+          "type": "number"
+        },
+        "sugar": {
+          "type": "number"
+        },
+        "totalFat": {
+          "type": "number"
+        },
+        "total_carbohydrate": {
+          "type": "number"
+        },
+        "vitamin_d": {
+          "type": "number"
+        }
+      }
+    },
+    "food.WriteFood": {
+      "type": "object",
+      "properties": {
+        "calcium": {
+          "type": "number"
+        },
+        "calories": {
+          "type": "number"
+        },
+        "category": {
+          "type": "string"
+        },
+        "cholesterol": {
+          "type": "number"
+        },
+        "concentrated": {
+          "type": "integer"
+        },
+        "fiber": {
+          "type": "number"
+        },
+        "fnvl": {
+          "type": "integer"
+        },
+        "iron": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "potassium": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "rate": {
+          "type": "number"
+        },
+        "saturated": {
+          "type": "number"
+        },
+        "sodium": {
+          "type": "number"
+        },
+        "sugar": {
+          "type": "number"
+        },
+        "totalFat": {
+          "type": "number"
+        },
+        "total_carbohydrate": {
+          "type": "number"
+        },
+        "vitamin_d": {
+          "type": "number"
+        }
+      }
+    }
+  }
 }
