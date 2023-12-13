@@ -19,16 +19,16 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		log.Panicln("config.New err: ", err)
 	}
 
-	_, err = dbx.Open("libsql", cfg.DBURL)
+	db, err := dbx.Open("libsql", cfg.DBURL)
 	if err != nil {
 		panic("failed to connect database")
 	}
 
-	handler().ServeHTTP(w, r)
+	handler(db).ServeHTTP(w, r)
 }
 
-func handler() http.HandlerFunc {
-	app := server.New()
+func handler(db *dbx.DB) http.HandlerFunc {
+	app := server.New(db)
 
 	return adaptor.FiberApp(app)
 }
