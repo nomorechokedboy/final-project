@@ -53,7 +53,7 @@ func NewServeCommand() *cobra.Command {
 			log.Println("Running cleanup tasks...")
 
 			// Your cleanup tasks go here
-			// db.Close()
+			db.Close()
 			// redisConn.Close()
 			log.Println("Fiber was successful shutdown.")
 		},
