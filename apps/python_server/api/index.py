@@ -7,8 +7,8 @@ from datetime import datetime
 
 def get_application() -> FastAPI:
     application = FastAPI(
-        title='FastAPI with Minio',
-        description='Integrate FastAPI with Minio',
+        title='HSR server',
+        description='HSR python server',
         openapi_url="/openapi.json",
         docs_url="/docs"
     )
