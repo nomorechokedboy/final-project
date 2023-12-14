@@ -1,6 +1,7 @@
 package food
 
 import (
+	"database/sql"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -27,7 +28,7 @@ func (h *FoodHandler) FindOne(c *fiber.Ctx) error {
 	resp := &Food{Id: id}
 	if err := h.repo.FindOne(resp); err != nil {
 		log.Println("GetFoodDetails.Query err: ", err)
-		if err.Error() == "sql: no rows in result set" {
+		if err == sql.ErrNoRows {
 			return fiber.ErrNotFound
 		}
 
