@@ -1,36 +1,51 @@
-from flask_restful import Api, Resource
-from flask import Flask, jsonify
-from flask_swagger import swagger as Swagger
-from flask_swagger_ui import get_swaggerui_blueprint
+import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+import os
+from datetime import datetime
 
-app = Flask(__name__)
-api = Api(app)
-swagger = Swagger(app)
+def get_application() -> FastAPI:
+    application = FastAPI(
+        title='FastAPI with Minio',
+        description='Integrate FastAPI with Minio',
+        openapi_url="/openapi.json",
+        docs_url="/docs"
+    )
 
-class HelloWorld(Resource):
-    def get(self):
-        """Return a hello world message"""
-        return {'message': 'Hello World!'}
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=['*'],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
-api.add_resource(HelloWorld, '/hello')
+    return application
 
-# Swagger documentation route
-@app.route('/swagger')
-def get_swagger():
-    swag = Swagger(app)
-    swag['info']['version'] = "1.0"
-    swag['info']['title'] = "My API"
-    return jsonify(swag)
+app = get_application()
 
-# Swagger UI route
-SWAGGER_URL = '/docs'
-API_URL = '/swagger'
-swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "My API"
-    }
-)
-app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+@app.get('/', tags=[''])
+def get():
+    return RedirectResponse("/docs")
 
+@app.get('/healthz', tags=[''])
+def get():
+    with open('/proc/uptime', 'r') as f:
+        uptime = float(f.readline().split()[0])
+
+    return { 
+            "uptime": uptime,
+            "message": 'I am fine! Update check for dev',
+            "timestamp": datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+            }
+
+if __name__ == "__main__":
+    uvicorn.run(
+        "index:app",
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", 5000)),
+        reload=True,
+        log_level=os.getenv('LOG_LEVEL', "info"),
+        proxy_headers=True
+    )
