@@ -7,7 +7,7 @@
   ],
   "functions": {
     "api/index.py": {
-      "includeFiles": ["api/**"]
+      "includeFiles": "api/**"
     }
   }
 }
