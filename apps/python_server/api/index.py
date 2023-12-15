@@ -2,8 +2,8 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from hsr_food import HSRFood
-from hsr_calculator import get_health_star_rating
+from hsr_food import HSRFood 
+from hsr_calculator import get_health_star_rating 
 import os
 from datetime import datetime
 from pydantic import BaseModel
