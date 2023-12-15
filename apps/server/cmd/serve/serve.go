@@ -31,7 +31,7 @@ func NewServeCommand() *cobra.Command {
 			}
 			db.LogFunc = log.Printf
 
-			app := server.New(db)
+			app := server.New(db, cfg)
 
 			go func() {
 				if err := app.Listen(":5005"); err != nil {

@@ -1,7 +1,10 @@
 package server
 
 import (
+	"api/internals/config"
 	"api/internals/food"
+	"api/internals/hsr"
+	"net/http"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -38,7 +41,7 @@ func index(c *fiber.Ctx) error {
 	return c.Redirect("/docs")
 }
 
-func New(db *dbx.DB) *fiber.App {
+func New(db *dbx.DB, conf *config.Config) *fiber.App {
 	app := fiber.New()
 
 	app.Use(recover.New())
@@ -52,6 +55,10 @@ func New(db *dbx.DB) *fiber.App {
 	foodRepo := food.NewRepo(db)
 	foodHandler := food.New(foodRepo)
 
+	client := &http.Client{Timeout: 30 * time.Second}
+	hsrRepo := hsr.NewRepo(client, conf)
+	hsrHandler := hsr.New(hsrRepo)
+
 	v1 := app.Group("/api/v1")
 
 	foods := v1.Group("/foods")
@@ -60,6 +67,9 @@ func New(db *dbx.DB) *fiber.App {
 	foods.Post("", foodHandler.Insert)
 	foods.Put("/:id<int,min(1)>", foodHandler.Update)
 	foods.Delete("/:id<int,min(1)>", foodHandler.Delete)
+
+	hsr := v1.Group("/hsr")
+	hsr.Post("/calc", hsrHandler.Calc)
 
 	return app
 }

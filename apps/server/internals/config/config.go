@@ -2,13 +2,10 @@ package config
 
 import "github.com/ilyakaznacheev/cleanenv"
 
-type Database struct {
-	DB_URL string `env:"DB_URL"`
-}
-
 type Config struct {
-	Env   string `env:"ENV"    env-default:"dev"`
-	DBURL string `env:"DB_URL"`
+	Env           string `env:"ENV"         env-default:"dev"`
+	DBURL         string `env:"DB_URL"`
+	HSRServiceURL string `env:"HSR_SVC_URL" env-default:"http://localhost:5000"`
 }
 
 func New() (*Config, error) {

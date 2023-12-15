@@ -24,11 +24,11 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		panic("failed to connect database")
 	}
 
-	handler(db).ServeHTTP(w, r)
+	handler(db, cfg).ServeHTTP(w, r)
 }
 
-func handler(db *dbx.DB) http.HandlerFunc {
-	app := server.New(db)
+func handler(db *dbx.DB, conf *config.Config) http.HandlerFunc {
+	app := server.New(db, conf)
 
 	return adaptor.FiberApp(app)
 }
