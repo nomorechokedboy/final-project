@@ -80,6 +80,34 @@ definitions:
       vitamin_d:
         type: number
     type: object
+  hsr.HSRCalcBody:
+    properties:
+      category:
+        type: string
+      concentrated_fnvl:
+        type: number
+      energy:
+        type: number
+      fibre:
+        type: number
+      fnvl:
+        type: number
+      name:
+        type: string
+      protein:
+        type: number
+      saturated_fat:
+        type: number
+      sodium:
+        type: number
+      total_sugars:
+        type: number
+    type: object
+  hsr.HSRCalcResponse:
+    properties:
+      data:
+        type: number
+    type: object
 info:
   contact:
     email: fiber@swagger.io
@@ -95,135 +123,159 @@ paths:
   /foods:
     get:
       consumes:
-      - application/json
+        - application/json
       description: Get list food nutrients and rate
       parameters:
-      - description: Page
-        in: query
-        name: page
-        type: integer
-      - description: Page Size
-        in: query
-        name: pageSize
-        type: integer
-      - default: desc
-        description: Sort direction
-        enum:
-        - asc
-        - desc
-        in: query
-        name: sort
-        type: string
-      - description: Search term
-        in: query
-        name: search
-        type: string
+        - description: Page
+          in: query
+          name: page
+          type: integer
+        - description: Page Size
+          in: query
+          name: pageSize
+          type: integer
+        - default: desc
+          description: Sort direction
+          enum:
+            - asc
+            - desc
+          in: query
+          name: sort
+          type: string
+        - description: Search term
+          in: query
+          name: search
+          type: string
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/food.Food'
+            $ref: "#/definitions/food.Food"
         "500":
           description: Internal Server Error
           schema:
             type: string
       summary: Get list food details api
       tags:
-      - Food
+        - Food
     post:
       consumes:
-      - application/json
+        - application/json
       description: Insert food nutrients and rate for custom HSR
       parameters:
-      - description: Create food body
-        in: body
-        name: post
-        required: true
-        schema:
-          $ref: '#/definitions/food.WriteFood'
+        - description: Create food body
+          in: body
+          name: post
+          required: true
+          schema:
+            $ref: "#/definitions/food.WriteFood"
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/food.Food'
+            $ref: "#/definitions/food.Food"
         "500":
           description: Internal Server Error
           schema:
             type: string
       summary: Create food api
       tags:
-      - Food
+        - Food
   /foods/{id}:
     delete:
       consumes:
-      - application/json
+        - application/json
       description: Delete food nutrients and rate for custom HSR
       parameters:
-      - description: Food ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: Food ID
+          in: path
+          name: id
+          required: true
+          type: integer
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/food.Food'
+            $ref: "#/definitions/food.Food"
         "500":
           description: Internal Server Error
           schema:
             type: string
       summary: Delete food api
       tags:
-      - Food
+        - Food
     get:
       consumes:
-      - application/json
+        - application/json
       description: Get food nutrients and rate
       parameters:
-      - description: Food ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: Food ID
+          in: path
+          name: id
+          required: true
+          type: integer
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/food.Food'
+            $ref: "#/definitions/food.Food"
         "500":
           description: Internal Server Error
           schema:
             type: string
       summary: Get food details api
       tags:
-      - Food
+        - Food
     put:
       consumes:
-      - application/json
+        - application/json
       description: Update food nutrients and rate for custom HSR
       parameters:
-      - description: Update food body
-        in: body
-        name: post
-        required: true
-        schema:
-          $ref: '#/definitions/food.WriteFood'
-      - description: Food ID
-        in: path
-        name: id
-        required: true
-        type: integer
+        - description: Update food body
+          in: body
+          name: post
+          required: true
+          schema:
+            $ref: "#/definitions/food.WriteFood"
+        - description: Food ID
+          in: path
+          name: id
+          required: true
+          type: integer
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/food.Food'
+            $ref: "#/definitions/food.Food"
         "500":
           description: Internal Server Error
           schema:
             type: string
       summary: Update food api
       tags:
-      - Food
+        - Food
+  /hsr/calc:
+    post:
+      consumes:
+        - application/json
+      description: Calculate food stars
+      parameters:
+        - description: HSR body
+          in: body
+          name: post
+          required: true
+          schema:
+            $ref: "#/definitions/hsr.HSRCalcBody"
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/hsr.HSRCalcResponse"
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Calculate food rate
+      tags:
+        - HSR
 swagger: "2.0"

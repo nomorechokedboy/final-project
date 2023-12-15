@@ -224,6 +224,43 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/hsr/calc": {
+            "post": {
+                "description": "Calculate food stars",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "HSR"
+                ],
+                "summary": "Calculate food rate",
+                "parameters": [
+                    {
+                        "description": "HSR body",
+                        "name": "post",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/hsr.HSRCalcBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hsr.HSRCalcResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -344,6 +381,49 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "vitamin_d": {
+                    "type": "number"
+                }
+            }
+        },
+        "hsr.HSRCalcBody": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "concentrated_fnvl": {
+                    "type": "number"
+                },
+                "energy": {
+                    "type": "number"
+                },
+                "fibre": {
+                    "type": "number"
+                },
+                "fnvl": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "protein": {
+                    "type": "number"
+                },
+                "saturated_fat": {
+                    "type": "number"
+                },
+                "sodium": {
+                    "type": "number"
+                },
+                "total_sugars": {
+                    "type": "number"
+                }
+            }
+        },
+        "hsr.HSRCalcResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
                     "type": "number"
                 }
             }
