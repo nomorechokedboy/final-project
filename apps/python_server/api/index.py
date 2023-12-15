@@ -259,6 +259,7 @@ def get_profiler_score(food):
 
 
 def get_health_star_rating(food: HSRFood):
+    health_star = 0
     sc = get_profiler_score(food)
     if food.category == "1":
         if food.name == "Water":
@@ -280,6 +281,7 @@ def get_health_star_rating(food: HSRFood):
         health_star = lookup_table(sc, "<=", ">=", health_star_rating_table, "rating", "category 3")
     elif food.category == "3D":
         health_star = lookup_table(sc, "<=", ">=", health_star_rating_table, "rating", "category 3D")
+
     return health_star
 
 class HSRFoodBody(BaseModel):
@@ -329,10 +331,16 @@ def get():
             "timestamp": datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
     }
 
-@app.post("/api/v1/hsr/calc", tags=['HSR'])
+class CalcResp(BaseModel):
+    data: float
+
+@app.post("/api/v1/hsr/calc", tags=['HSR'], response_model=CalcResp)
 def post(foodBody: HSRFoodBody):
     food = HSRFood(name=foodBody.name,category=foodBody.category,energy=foodBody.energy,saturated_fat=foodBody.saturated_fat,total_sugars=foodBody.total_sugars,sodium=foodBody.sodium,concentrated_fnvl=foodBody.concentrated_fnvl,fnvl=foodBody.fnvl,fibre=foodBody.fibre,protein=foodBody.protein)
-    return get_health_star_rating(food)
+    rating = get_health_star_rating(food)
+    return {
+        "data": rating
+    }
 
 if __name__ == "__main__":
     uvicorn.run(
