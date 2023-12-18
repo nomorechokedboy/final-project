@@ -10,8 +10,11 @@ import { createSignal } from "solid-js";
 import { getPhoto } from "./camera";
 import { invoke } from "@tauri-apps/api/tauri";
 import SearchPage from "./SearchPage";
+import toastsStore from "./toast";
+import Toasts from "./Toasts";
 
 function App() {
+  const { toasts, toastify } = toastsStore;
   const userAgent = navigator.userAgent.toLowerCase();
   const isMobile =
     userAgent.includes("android") || userAgent.includes("iphone");
@@ -19,6 +22,8 @@ function App() {
   const [searchTerm, setSearchTerm] = createSignal("");
   const [name, setName] = createSignal("");
   const navigate = useNavigate();
+
+  toastify({ type: "success", description: "lmao", id: "1" });
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -37,8 +42,8 @@ function App() {
   }
 
   return (
-    <div class="flex flex-col h-screen">
-      <header class="flex items-center flex-shrink-0 p-5">
+    <div class="flex flex-col h-screen relative">
+      <header class="flex items-center flex-shrink-0 p-5 gap-2">
         <LogoutIcon />
         <div class="flex-1 text-center">
           <form
@@ -79,6 +84,9 @@ function App() {
           </div>
         </A>
       </footer>
+      <div class="absolute top-20 right-5">
+        <Toasts />
+      </div>
     </div>
   );
 }
