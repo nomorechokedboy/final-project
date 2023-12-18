@@ -1,5 +1,14 @@
 basePath: /api/v1
 definitions:
+  food.FindFoodResp:
+    properties:
+      data:
+        items:
+          $ref: "#/definitions/food.Food"
+        type: array
+      page:
+        type: integer
+    type: object
   food.Food:
     properties:
       calcium:
@@ -150,7 +159,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: "#/definitions/food.Food"
+            $ref: "#/definitions/food.FindFoodResp"
         "500":
           description: Internal Server Error
           schema:

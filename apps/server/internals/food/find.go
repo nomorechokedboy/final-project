@@ -6,6 +6,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+type FindFoodResp struct {
+	Data []Food `json:"data"`
+	Page int64  `json:"page"`
+}
+
 // @FindFood godoc
 // @Summary Get list food details api
 // @Description Get list food nutrients and rate
@@ -15,7 +20,7 @@ import (
 // @Param  pageSize query int false "Page Size"
 // @Param  sort query string false "Sort direction" Enums(asc, desc) default(desc)
 // @Param  search query string false "Search term"
-// @Success 200 {object} Food
+// @Success 200 {object} FindFoodResp
 // @Failure 500 {string} string
 // @Router /foods [get]
 func (h *FoodHandler) Find(c *fiber.Ctx) error {
@@ -27,12 +32,13 @@ func (h *FoodHandler) Find(c *fiber.Ctx) error {
 
 	log.Printf("GetFoods request: %#v\n", query)
 
-	resp, err := h.repo.Find(query)
+	data, err := h.repo.Find(query)
 	if err != nil {
 		log.Println("GetFoods.All err: ", err)
 		return fiber.ErrInternalServerError
 	}
 
+	resp := FindFoodResp{Data: data, Page: query.GetPage()}
 	log.Printf("GetFoods success. Response: %#v\n", resp)
 
 	return c.JSON(resp)

@@ -14,5 +14,5 @@ type HSRCalcBody struct {
 }
 
 type HSRCalcResponse struct {
-	Data float64
+	Data float64 `json:"data"`
 }

@@ -68,7 +68,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/food.Food"
+                            "$ref": "#/definitions/food.FindFoodResp"
                         }
                     },
                     "500": {
@@ -264,6 +264,20 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "food.FindFoodResp": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/food.Food"
+                    }
+                },
+                "page": {
+                    "type": "integer"
+                }
+            }
+        },
         "food.Food": {
             "type": "object",
             "properties": {
