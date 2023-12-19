@@ -1,11 +1,18 @@
+import numpy as np
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
+from fastapi import FastAPI, File, UploadFile
 import os
 from datetime import datetime
 from pydantic import BaseModel
 import operator
+from keras.preprocessing import image
+from keras.models import load_model
+from typing import Annotated
+import sys
+from PIL import Image
 
 class HSRFood:
     name: str
@@ -341,6 +348,75 @@ def post(foodBody: HSRFoodBody):
     return {
         "data": rating
     }
+
+classes = [
+    "Banh beo",
+    "Banh bot loc",
+    "Banh cuon",
+    "Banh gio",
+    "Banh khot",
+    "Banh mi",
+    "Banh xeo",
+    "Bbq chicken wings",
+    "Bun bo Hue",
+    "Bun dau mam tom",
+    "Bun rieu",
+    "Bun thit nuong",
+    "Burrito",
+    "Ca kho to",
+    "Canh chua",
+    "Cha gio",
+    "Chao long",
+    "Cheesecake",
+    "Chicken curry",
+    "Com tam",
+    "Donut",
+    "Dumpling",
+    "French fries",
+    "Fried rice",
+    "Garlic bread",
+    "Goi cuon",
+    "Hamburger",
+    "Hu tieu",
+    "Mi quang",
+    "Omelette",
+    "Pad thai",
+    "Pancake",
+    "Pho",
+    "Pizza",
+    "Ramen",
+    "Roasted duck",
+    "Sandwich",
+    "Spaghetti",
+    "Sushi",
+    "Waffle",
+]
+
+class DetectResp(BaseModel):
+    data: str 
+
+@app.post("/api/v1/hsr/detect", tags=['HSR'], response_model=DetectResp)
+async def post(image: UploadFile):
+    bytes_data = image.file.read()
+    image.content_type
+    with open('./tmp.jpg', 'wb') as f:
+        f.write(bytes_data)
+    
+    img_tmp = preprocess_image('./tmp.jpg')
+    os.remove('./tmp.jpg')
+    model_path = os.path.dirname(__file__) + '/fine_tune_model_trained.hdf5'
+    model = load_model(model_path)
+    pred_probs = model.predict(img_tmp)[0]
+    index = np.argmax(pred_probs)
+    label = classes[index]
+
+    return {"data": label}
+
+def preprocess_image(img_path):
+    img = image.load_img(img_path, target_size=(300, 300))
+    img = image.img_to_array(img) / 255
+    img = np.expand_dims(img, axis=0)
+    return img
 
 if __name__ == "__main__":
     uvicorn.run(
