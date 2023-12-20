@@ -261,6 +261,94 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/hsr/intakes": {
+            "get": {
+                "description": "Get list hsr intake",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "HSR"
+                ],
+                "summary": "Get list hsr intake api",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Size",
+                        "name": "pageSize",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "UserId",
+                        "name": "userId",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search term",
+                        "name": "search",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hsr.FindHSRIntakeResp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Insert food nutrients and rate for custom HSR",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "HSR"
+                ],
+                "summary": "Create food api",
+                "parameters": [
+                    {
+                        "description": "Create food body",
+                        "name": "post",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/hsr.HSRIntakeBody"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/hsr.HSRIntake"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -329,13 +417,13 @@ const docTemplate = `{
                 "sugar": {
                     "type": "number"
                 },
+                "totalCarbohydrate": {
+                    "type": "number"
+                },
                 "totalFat": {
                     "type": "number"
                 },
-                "total_carbohydrate": {
-                    "type": "number"
-                },
-                "vitamin_d": {
+                "vitaminD": {
                     "type": "number"
                 }
             }
@@ -388,14 +476,28 @@ const docTemplate = `{
                 "sugar": {
                     "type": "number"
                 },
+                "totalCarbohydrate": {
+                    "type": "number"
+                },
                 "totalFat": {
                     "type": "number"
                 },
-                "total_carbohydrate": {
+                "vitaminD": {
                     "type": "number"
+                }
+            }
+        },
+        "hsr.FindHSRIntakeResp": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/hsr.HSRIntake"
+                    }
                 },
-                "vitamin_d": {
-                    "type": "number"
+                "page": {
+                    "type": "integer"
                 }
             }
         },
@@ -405,7 +507,7 @@ const docTemplate = `{
                 "category": {
                     "type": "string"
                 },
-                "concentrated_fnvl": {
+                "concentratedFnvl": {
                     "type": "number"
                 },
                 "energy": {
@@ -423,13 +525,13 @@ const docTemplate = `{
                 "protein": {
                     "type": "number"
                 },
-                "saturated_fat": {
+                "saturatedFat": {
                     "type": "number"
                 },
                 "sodium": {
                     "type": "number"
                 },
-                "total_sugars": {
+                "totalSugars": {
                     "type": "number"
                 }
             }
@@ -439,6 +541,79 @@ const docTemplate = `{
             "properties": {
                 "data": {
                     "type": "number"
+                }
+            }
+        },
+        "hsr.HSRIntake": {
+            "type": "object",
+            "properties": {
+                "calcium": {
+                    "type": "number"
+                },
+                "calories": {
+                    "type": "number"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "cholesterol": {
+                    "type": "number"
+                },
+                "concentrated": {
+                    "type": "integer"
+                },
+                "fiber": {
+                    "type": "number"
+                },
+                "fnvl": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "iron": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "potassium": {
+                    "type": "number"
+                },
+                "protein": {
+                    "type": "number"
+                },
+                "rate": {
+                    "type": "number"
+                },
+                "saturated": {
+                    "type": "number"
+                },
+                "sodium": {
+                    "type": "number"
+                },
+                "sugar": {
+                    "type": "number"
+                },
+                "totalCarbohydrate": {
+                    "type": "number"
+                },
+                "totalFat": {
+                    "type": "number"
+                },
+                "vitaminD": {
+                    "type": "number"
+                }
+            }
+        },
+        "hsr.HSRIntakeBody": {
+            "type": "object",
+            "properties": {
+                "foodId": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "string"
                 }
             }
         }

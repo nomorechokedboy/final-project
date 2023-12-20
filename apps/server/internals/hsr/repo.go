@@ -59,3 +59,8 @@ func (r *HSRRepo) Calc(req *HSRCalcBody) (*HSRCalcResponse, error) {
 
 	return respData, nil
 }
+
+type HSRIntakeRepository interface {
+	Find(*HSRIntakeQuery) ([]HSRIntake, error)
+	Insert(*HSRIntakeBody) error
+}

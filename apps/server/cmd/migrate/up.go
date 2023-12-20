@@ -1,8 +1,10 @@
 package migrate
 
 import (
+	"api/internals/config"
 	"log"
 
+	"github.com/pocketbase/dbx"
 	"github.com/spf13/cobra"
 )
 
@@ -13,40 +15,51 @@ func UpCmd() *cobra.Command {
 		Long:  "Running all migrations to bring the database up to date",
 		Run: func(cmd *cobra.Command, args []string) {
 			log.Println("Migrating database up")
-			/* cfg, err := config.New()
-						if err != nil {
-							log.Panicln("config.New err: ", err)
-						}
+			cfg, err := config.New()
+			if err != nil {
+				log.Panicln("config.New err: ", err)
+			}
 
-						db, err := dbx.Open("libsql", cfg.DBURL)
-						if err != nil {
-							log.Panic("failed to connect database")
-						}
-						foodRateNutrients := map[string]string{
-							"id":                 "INTEGER PRIMARY KEY AUTOINCREMENT",
-							"name":               "VARCHAR(23) NOT NULL",
-							"calories":           "REAL",
-							"total_fat":          "REAL",
-							"saturated":          "REAL",
-							"cholesterol":        "REAL",
-							"sodium":             "REAL",
-							"total_carbohydrate": "REAL",
-							"fiber":              "REAL",
-							"sugar":              "REAL",
-							"protein":            "REAL",
-							"vitamin_d":          "REAL",
-							"calcium":            "REAL",
-							"iron":               "REAL",
-							"potassium":          "REAL",
-							"category":           "VARCHAR(2)",
-							"concentrated":       "INTEGER",
-							"fnvl":               "INTEGER",
-							"rate":               "REAL",
-						}
-						if _, err := db.CreateTable("food_rate_nutrients", foodRateNutrients).Execute(); err != nil {
-							log.Panicln("MigrateUp.CreateTable err: ", err)
-						}
-						if _, err := db.NewQuery(`
+			db, err := dbx.Open("libsql", cfg.DBURL)
+			if err != nil {
+				log.Panic("failed to connect database")
+			}
+
+			foodRateNutrients := map[string]string{
+				"id":                 "INTEGER PRIMARY KEY AUTOINCREMENT",
+				"name":               "VARCHAR(23) NOT NULL",
+				"calories":           "REAL",
+				"total_fat":          "REAL",
+				"saturated":          "REAL",
+				"cholesterol":        "REAL",
+				"sodium":             "REAL",
+				"total_carbohydrate": "REAL",
+				"fiber":              "REAL",
+				"sugar":              "REAL",
+				"protein":            "REAL",
+				"vitamin_d":          "REAL",
+				"calcium":            "REAL",
+				"iron":               "REAL",
+				"potassium":          "REAL",
+				"category":           "VARCHAR(2)",
+				"concentrated":       "INTEGER",
+				"fnvl":               "INTEGER",
+				"rate":               "REAL",
+			}
+			if _, err := db.CreateTable("food_rate_nutrients", foodRateNutrients).Execute(); err != nil {
+				log.Panicln("MigrateUp.CreateTable err: ", err)
+			}
+
+			hsrIntakes := map[string]string{
+				"id":      "INTEGER PRIMARY KEY AUTOINCREMENT",
+				"food_id": "INTEGER NOT NULL REFERENCES food_rate_nutrients(id)",
+				"user_id": "TEXT",
+			}
+			if _, err := db.CreateTable("hsr_intakes", hsrIntakes).Execute(); err != nil {
+				log.Panicln("MigrateUp.CreateTable err: ", err)
+			}
+
+			if _, err := db.NewQuery(`
 			INSERT INTO food_rate_nutrients(name,calories,total_fat,saturated,cholesterol,sodium,total_carbohydrate,fiber,sugar,protein,vitamin_d,calcium,iron,potassium,category,concentrated,fnvl,rate) VALUES ('Orange juice',45.0,0.2,0.0,0.0,1.0,10.0,0.2,8.4,0.7,0.0,11.0,0.2,200.0,'1',100,0,3.0);
 			INSERT INTO food_rate_nutrients(name,calories,total_fat,saturated,cholesterol,sodium,total_carbohydrate,fiber,sugar,protein,vitamin_d,calcium,iron,potassium,category,concentrated,fnvl,rate) VALUES ('Tomato juice',17.0,0.3,0.0,0.0,253.0,3.5,0.4,2.6,0.9,0.0,10.0,0.4,217.0,'1',100,0,4.0);
 			INSERT INTO food_rate_nutrients(name,calories,total_fat,saturated,cholesterol,sodium,total_carbohydrate,fiber,sugar,protein,vitamin_d,calcium,iron,potassium,category,concentrated,fnvl,rate) VALUES ('Grape juice',60.0,0.1,0.0,0.0,5.0,15.0,0.2,14.0,0.4,0.0,11.0,0.3,104.0,'1',100,0,1.5);
@@ -455,8 +468,8 @@ func UpCmd() *cobra.Command {
 			INSERT INTO food_rate_nutrients(name,calories,total_fat,saturated,cholesterol,sodium,total_carbohydrate,fiber,sugar,protein,vitamin_d,calcium,iron,potassium,category,concentrated,fnvl,rate) VALUES ('Mozzarella cheese',300.0,22.0,13.0,79.0,627.0,2.2,0.0,1.0,22.0,0.4,505.0,0.4,76.0,'3D',0,0,5.0);
 			INSERT INTO food_rate_nutrients(name,calories,total_fat,saturated,cholesterol,sodium,total_carbohydrate,fiber,sugar,protein,vitamin_d,calcium,iron,potassium,category,concentrated,fnvl,rate) VALUES ('Cottage cheese',98.0,4.3,1.7,17.0,364.0,3.4,0.0,2.7,11.0,0.1,83.0,0.1,104.0,'3D',0,0,5.0);
 			            `).Execute(); err != nil {
-							log.Panicln("MigrateUp.NewQuery err: ", err)
-						} */
+				log.Panicln("MigrateUp.NewQuery err: ", err)
+			}
 		},
 	}
 

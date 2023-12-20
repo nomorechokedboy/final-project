@@ -57,7 +57,8 @@ func New(db *dbx.DB, conf *config.Config) *fiber.App {
 
 	client := &http.Client{Timeout: 30 * time.Second}
 	hsrRepo := hsr.NewRepo(client, conf)
-	hsrHandler := hsr.New(hsrRepo)
+	hsrIntakeRepo := hsr.NewHSRIntakeRepo(db)
+	hsrHandler := hsr.New(hsrRepo, hsrIntakeRepo)
 
 	v1 := app.Group("/api/v1")
 
@@ -70,6 +71,8 @@ func New(db *dbx.DB, conf *config.Config) *fiber.App {
 
 	hsr := v1.Group("/hsr")
 	hsr.Post("/calc", hsrHandler.Calc)
+	hsr.Get("/intakes", hsrHandler.Find)
+	hsr.Post("/intakes", hsrHandler.Insert)
 
 	return app
 }

@@ -43,11 +43,11 @@ definitions:
         type: number
       sugar:
         type: number
-      total_carbohydrate:
+      totalCarbohydrate:
         type: number
       totalFat:
         type: number
-      vitamin_d:
+      vitaminD:
         type: number
     type: object
   food.WriteFood:
@@ -82,18 +82,27 @@ definitions:
         type: number
       sugar:
         type: number
-      total_carbohydrate:
+      totalCarbohydrate:
         type: number
       totalFat:
         type: number
-      vitamin_d:
+      vitaminD:
         type: number
+    type: object
+  hsr.FindHSRIntakeResp:
+    properties:
+      data:
+        items:
+          $ref: "#/definitions/hsr.HSRIntake"
+        type: array
+      page:
+        type: integer
     type: object
   hsr.HSRCalcBody:
     properties:
       category:
         type: string
-      concentrated_fnvl:
+      concentratedFnvl:
         type: number
       energy:
         type: number
@@ -105,17 +114,65 @@ definitions:
         type: string
       protein:
         type: number
-      saturated_fat:
+      saturatedFat:
         type: number
       sodium:
         type: number
-      total_sugars:
+      totalSugars:
         type: number
     type: object
   hsr.HSRCalcResponse:
     properties:
       data:
         type: number
+    type: object
+  hsr.HSRIntake:
+    properties:
+      calcium:
+        type: number
+      calories:
+        type: number
+      category:
+        type: string
+      cholesterol:
+        type: number
+      concentrated:
+        type: integer
+      fiber:
+        type: number
+      fnvl:
+        type: integer
+      id:
+        type: integer
+      iron:
+        type: number
+      name:
+        type: string
+      potassium:
+        type: number
+      protein:
+        type: number
+      rate:
+        type: number
+      saturated:
+        type: number
+      sodium:
+        type: number
+      sugar:
+        type: number
+      totalCarbohydrate:
+        type: number
+      totalFat:
+        type: number
+      vitaminD:
+        type: number
+    type: object
+  hsr.HSRIntakeBody:
+    properties:
+      foodId:
+        type: integer
+      userId:
+        type: string
     type: object
 info:
   contact:
@@ -285,6 +342,64 @@ paths:
           schema:
             type: string
       summary: Calculate food rate
+      tags:
+        - HSR
+  /hsr/intakes:
+    get:
+      consumes:
+        - application/json
+      description: Get list hsr intake
+      parameters:
+        - description: Page
+          in: query
+          name: page
+          type: integer
+        - description: Page Size
+          in: query
+          name: pageSize
+          type: integer
+        - description: UserId
+          in: query
+          name: userId
+          required: true
+          type: integer
+        - description: Search term
+          in: query
+          name: search
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/hsr.FindHSRIntakeResp"
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get list hsr intake api
+      tags:
+        - HSR
+    post:
+      consumes:
+        - application/json
+      description: Insert food nutrients and rate for custom HSR
+      parameters:
+        - description: Create food body
+          in: body
+          name: post
+          required: true
+          schema:
+            $ref: "#/definitions/hsr.HSRIntakeBody"
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/hsr.HSRIntake"
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create food api
       tags:
         - HSR
 swagger: "2.0"

@@ -1,9 +1,10 @@
 package hsr
 
 type HSRHandler struct {
-	repo HSRRepository
+	repo       HSRRepository
+	intakeRepo HSRIntakeRepository
 }
 
-func New(repo HSRRepository) *HSRHandler {
-	return &HSRHandler{repo}
+func New(repo HSRRepository, intakeRepo HSRIntakeRepository) *HSRHandler {
+	return &HSRHandler{repo, intakeRepo}
 }

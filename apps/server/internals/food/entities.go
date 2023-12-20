@@ -17,11 +17,11 @@ type WriteFood struct {
 	Saturated         float64 `json:"saturated"`
 	Cholesterol       float64 `json:"cholesterol"`
 	Sodium            float64 `json:"sodium"`
-	TotalCarbohydrate float64 `json:"total_carbohydrate"`
+	TotalCarbohydrate float64 `json:"totalCarbohydrate"`
 	Fiber             float64 `json:"fiber"`
 	Sugar             float64 `json:"sugar"`
 	Protein           float64 `json:"protein"`
-	VitaminD          float64 `json:"vitamin_d"`
+	VitaminD          float64 `json:"vitaminD"`
 	Calcium           float64 `json:"calcium"`
 	Iron              float64 `json:"iron"`
 	Potassium         float64 `json:"potassium"`
