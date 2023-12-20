@@ -1,8 +1,9 @@
 import axiosGlobal, { AxiosError, type CreateAxiosDefaults } from "axios";
 import { ToastMessage } from "../toast";
 import toasts from "../toast";
+import { FoodApiFactory, FoodApiFp } from "./gateway";
 
-const baseURL = "http://localhost:5005";
+const baseURL = "http://localhost:5005/api/v1";
 
 const conf: CreateAxiosDefaults = {
   baseURL,
@@ -13,6 +14,7 @@ const conf: CreateAxiosDefaults = {
 };
 
 const axios = axiosGlobal.create(conf);
+
 const createAxiosResponseInterceptor = () => {
   const interceptor = axios.interceptors.response.use(
     (response) => response,
@@ -65,4 +67,4 @@ const createAxiosResponseInterceptor = () => {
 
 createAxiosResponseInterceptor();
 
-export default axios;
+export const FoodApi = FoodApiFactory(undefined, undefined, axios);

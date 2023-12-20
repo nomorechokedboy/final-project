@@ -42,6 +42,25 @@ import {
 /**
  *
  * @export
+ * @interface FoodFindFoodResp
+ */
+export interface FoodFindFoodResp {
+  /**
+   *
+   * @type {Array<FoodFood>}
+   * @memberof FoodFindFoodResp
+   */
+  data?: Array<FoodFood>;
+  /**
+   *
+   * @type {number}
+   * @memberof FoodFindFoodResp
+   */
+  page?: number;
+}
+/**
+ *
+ * @export
  * @interface FoodFood
  */
 export interface FoodFood {
@@ -274,6 +293,86 @@ export interface FoodWriteFood {
    * @memberof FoodWriteFood
    */
   vitamin_d?: number;
+}
+/**
+ *
+ * @export
+ * @interface HsrHSRCalcBody
+ */
+export interface HsrHSRCalcBody {
+  /**
+   *
+   * @type {string}
+   * @memberof HsrHSRCalcBody
+   */
+  category?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRCalcBody
+   */
+  concentrated_fnvl?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRCalcBody
+   */
+  energy?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRCalcBody
+   */
+  fibre?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRCalcBody
+   */
+  fnvl?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof HsrHSRCalcBody
+   */
+  name?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRCalcBody
+   */
+  protein?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRCalcBody
+   */
+  saturated_fat?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRCalcBody
+   */
+  sodium?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRCalcBody
+   */
+  total_sugars?: number;
+}
+/**
+ *
+ * @export
+ * @interface HsrHSRCalcResponse
+ */
+export interface HsrHSRCalcResponse {
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRCalcResponse
+   */
+  data?: number;
 }
 
 /**
@@ -573,7 +672,10 @@ export const FoodApiFp = function (configuration?: Configuration) {
       search?: string,
       options?: RawAxiosRequestConfig,
     ): Promise<
-      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<FoodFood>
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<FoodFindFoodResp>
     > {
       const localVarAxiosArgs = await localVarAxiosParamCreator.foodsGet(
         page,
@@ -738,7 +840,7 @@ export const FoodApiFactory = function (
       sort?: FoodsGetSortEnum,
       search?: string,
       options?: any,
-    ): AxiosPromise<FoodFood> {
+    ): AxiosPromise<FoodFindFoodResp> {
       return localVarFp
         .foodsGet(page, pageSize, sort, search, options)
         .then((request) => request(axios, basePath));
@@ -900,3 +1002,156 @@ export const FoodsGetSortEnum = {
 } as const;
 export type FoodsGetSortEnum =
   (typeof FoodsGetSortEnum)[keyof typeof FoodsGetSortEnum];
+
+/**
+ * HSRApi - axios parameter creator
+ * @export
+ */
+export const HSRApiAxiosParamCreator = function (
+  configuration?: Configuration,
+) {
+  return {
+    /**
+     * Calculate food stars
+     * @summary Calculate food rate
+     * @param {HsrHSRCalcBody} post HSR body
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    hsrCalcPost: async (
+      post: HsrHSRCalcBody,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'post' is not null or undefined
+      assertParamExists("hsrCalcPost", "post", post);
+      const localVarPath = `/hsr/calc`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: "POST",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter["Content-Type"] = "application/json";
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        post,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+  };
+};
+
+/**
+ * HSRApi - functional programming interface
+ * @export
+ */
+export const HSRApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = HSRApiAxiosParamCreator(configuration);
+  return {
+    /**
+     * Calculate food stars
+     * @summary Calculate food rate
+     * @param {HsrHSRCalcBody} post HSR body
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async hsrCalcPost(
+      post: HsrHSRCalcBody,
+      options?: RawAxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<HsrHSRCalcResponse>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.hsrCalcPost(
+        post,
+        options,
+      );
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath =
+        operationServerMap["HSRApi.hsrCalcPost"]?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
+  };
+};
+
+/**
+ * HSRApi - factory interface
+ * @export
+ */
+export const HSRApiFactory = function (
+  configuration?: Configuration,
+  basePath?: string,
+  axios?: AxiosInstance,
+) {
+  const localVarFp = HSRApiFp(configuration);
+  return {
+    /**
+     * Calculate food stars
+     * @summary Calculate food rate
+     * @param {HsrHSRCalcBody} post HSR body
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    hsrCalcPost(
+      post: HsrHSRCalcBody,
+      options?: any,
+    ): AxiosPromise<HsrHSRCalcResponse> {
+      return localVarFp
+        .hsrCalcPost(post, options)
+        .then((request) => request(axios, basePath));
+    },
+  };
+};
+
+/**
+ * HSRApi - object-oriented interface
+ * @export
+ * @class HSRApi
+ * @extends {BaseAPI}
+ */
+export class HSRApi extends BaseAPI {
+  /**
+   * Calculate food stars
+   * @summary Calculate food rate
+   * @param {HsrHSRCalcBody} post HSR body
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof HSRApi
+   */
+  public hsrCalcPost(post: HsrHSRCalcBody, options?: RawAxiosRequestConfig) {
+    return HSRApiFp(this.configuration)
+      .hsrCalcPost(post, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+}

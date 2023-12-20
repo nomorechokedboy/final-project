@@ -1,20 +1,18 @@
 import "./App.css";
-import Analytics from "./Analytics";
+import HSRCalc from "./Analytics";
 import CameraIcon from "~icons/ion/camera-sharp";
-import ChartIcon from "~icons/gg/chart";
+import CalcIcon from "~icons/solar/calculator-minimalistic-bold";
 import HomeIcon from "~icons/ic/baseline-home";
 import IntakeList from "./IntakeList";
 import LogoutIcon from "~icons/solar/logout-linear";
 import { A, Route, Routes, useNavigate } from "@solidjs/router";
 import { createSignal } from "solid-js";
 import { getPhoto } from "./camera";
-import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api";
 import SearchPage from "./SearchPage";
-import toastsStore from "./toast";
 import Toasts from "./Toasts";
 
 function App() {
-  const { toasts, toastify } = toastsStore;
   const userAgent = navigator.userAgent.toLowerCase();
   const isMobile =
     userAgent.includes("android") || userAgent.includes("iphone");
@@ -23,8 +21,6 @@ function App() {
   const [name, setName] = createSignal("");
   const navigate = useNavigate();
 
-  toastify({ type: "success", description: "lmao", id: "1" });
-
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
     setGreetMsg(await invoke("greet", { name: name() }));
@@ -32,14 +28,18 @@ function App() {
 
   async function handleCamera() {
     console.log("Test log");
+    console.log("???");
 
     try {
+      console.log("DMM");
+
       const { data, ...test } = await getPhoto();
-      console.log(JSON.stringify(test));
+      console.log(test, data);
     } catch (e) {
       console.error("Camera err: ", JSON.stringify(e));
     }
   }
+  console.log("Help me");
 
   return (
     <div class="flex flex-col h-screen relative">
@@ -65,7 +65,7 @@ function App() {
       <main class="flex-1 overflow-auto no-scrollbar">
         <Routes>
           <Route path="/" component={IntakeList} />
-          <Route path="/analytics" component={Analytics} />
+          <Route path="/analytics" component={HSRCalc} />
           <Route path="/search" component={SearchPage} />
         </Routes>
       </main>
@@ -76,11 +76,13 @@ function App() {
           </div>
         </A>
         <div class="flex items-center flex-col gap-1">
-          <CameraIcon />
+          <button onClick={greet}>
+            <CameraIcon />
+          </button>
         </div>
         <A href="/analytics">
           <div class="flex items-center flex-col gap-1">
-            <ChartIcon />
+            <CalcIcon />
           </div>
         </A>
       </footer>
