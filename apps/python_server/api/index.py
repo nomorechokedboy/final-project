@@ -3,16 +3,16 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, UploadFile
 import os
 from datetime import datetime
 from pydantic import BaseModel
 import operator
 from keras.preprocessing import image
 from keras.models import load_model
-from typing import Annotated
-import sys
-from PIL import Image
+
+model_path = os.path.dirname(__file__) + '/fine_tune_model_trained.hdf5'
+model = load_model(model_path, compile=False)
 
 class HSRFood:
     name: str
@@ -404,7 +404,6 @@ async def post(image: UploadFile):
     
     img_tmp = preprocess_image('./tmp.jpg')
     os.remove('./tmp.jpg')
-    model_path = os.path.dirname(__file__) + '/fine_tune_model_trained.hdf5'
     model = load_model(model_path)
     pred_probs = model.predict(img_tmp)[0]
     index = np.argmax(pred_probs)
