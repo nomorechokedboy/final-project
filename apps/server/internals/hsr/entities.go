@@ -3,6 +3,7 @@ package hsr
 import (
 	"api/internals/common"
 	"api/internals/food"
+	"mime/multipart"
 )
 
 type HSRCalcBody struct {
@@ -46,4 +47,12 @@ func (i HSRIntake) TableName() string {
 
 func (i HSRIntakeBody) TableName() string {
 	return "hsr_intakes"
+}
+
+type HSRDetectBody struct {
+	Image *multipart.FileHeader
+}
+
+type HSRDetectResponse struct {
+	Data string `json:"data"`
 }
