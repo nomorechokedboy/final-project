@@ -1,13 +1,46 @@
+import { createCalcHSRMutation } from "./queries";
+
 export default function HSRCalc() {
+  const calcHSRMutation = createCalcHSRMutation();
+
   return (
     <div class="flex gap-5 flex-col p-5">
       <form
         id="form1"
         class="grid grid-cols-2 gap-5"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
           const formData = new FormData(e.currentTarget);
-          console.log({ formData });
+          const body: Record<string, FormDataEntryValue> = {};
+          const numberFields = [
+            "energy",
+            "concentratedFnvl",
+            "fibre",
+            "fnvl",
+            "protein",
+            "saturatedFat",
+            "sodium",
+            "totalSugars",
+          ];
+          formData.forEach((val, key) => {
+            console.log({
+              test: numberFields.includes(key) !== undefined,
+              key,
+            });
+
+            if (numberFields.includes(key)) {
+              body[key] = parseFloat(val.toString()) as any;
+            } else {
+              body[key] = val;
+            }
+          });
+          console.log({ body });
+
+          try {
+            await calcHSRMutation.mutateAsync(body);
+          } catch (err) {
+            console.error("CalcHSR err: ", err);
+          }
         }}
       >
         <div>
@@ -40,19 +73,6 @@ export default function HSRCalc() {
         </div>
         <div>
           <div class="label">
-            <span class="label-text">Calcium</span>
-          </div>
-          <input
-            step="any"
-            type="number"
-            aria-describedby="helper-text-explanation"
-            class="input input-bordered input-sm w-full max-w-xs"
-            placeholder="Calcium..."
-            name="calcium"
-          />
-        </div>
-        <div>
-          <div class="label">
             <span class="label-text">Calories</span>
           </div>
           <input
@@ -61,20 +81,7 @@ export default function HSRCalc() {
             aria-describedby="helper-text-explanation"
             class="input input-bordered input-sm w-full max-w-xs"
             placeholder="Calories..."
-            name="calories"
-          />
-        </div>
-        <div>
-          <div class="label">
-            <span class="label-text">Cholesterol</span>
-          </div>
-          <input
-            step="any"
-            type="number"
-            aria-describedby="helper-text-explanation"
-            class="input input-bordered input-sm w-full max-w-xs"
-            placeholder="Cholesterol..."
-            name="cholesterol"
+            name="energy"
           />
         </div>
         <div>
@@ -87,7 +94,7 @@ export default function HSRCalc() {
             aria-describedby="helper-text-explanation"
             class="input input-bordered input-sm w-full max-w-xs"
             placeholder="Concentrated..."
-            name="concentrated"
+            name="concentratedFnvl"
           />
         </div>
         <div>
@@ -100,7 +107,7 @@ export default function HSRCalc() {
             aria-describedby="helper-text-explanation"
             class="input input-bordered input-sm w-full max-w-xs"
             placeholder="Fiber..."
-            name="fiber"
+            name="fibre"
           />
         </div>
         <div>
@@ -114,32 +121,6 @@ export default function HSRCalc() {
             class="input input-bordered input-sm w-full max-w-xs"
             placeholder="FNVL..."
             name="fnvl"
-          />
-        </div>
-        <div>
-          <div class="label">
-            <span class="label-text">Iron</span>
-          </div>
-          <input
-            step="any"
-            type="number"
-            aria-describedby="helper-text-explanation"
-            class="input input-bordered input-sm w-full max-w-xs"
-            placeholder="Iron..."
-            name="iron"
-          />
-        </div>
-        <div>
-          <div class="label">
-            <span class="label-text">Posstasium</span>
-          </div>
-          <input
-            step="any"
-            type="number"
-            aria-describedby="helper-text-explanation"
-            class="input input-bordered input-sm w-full max-w-xs"
-            placeholder="Posstasium..."
-            name="posstasium"
           />
         </div>
         <div>
@@ -165,7 +146,7 @@ export default function HSRCalc() {
             aria-describedby="helper-text-explanation"
             class="input input-bordered input-sm w-full max-w-xs"
             placeholder="Saturated..."
-            name="saturated"
+            name="saturatedFat"
           />
         </div>
         <div>
@@ -191,50 +172,19 @@ export default function HSRCalc() {
             aria-describedby="helper-text-explanation"
             class="input input-bordered input-sm w-full max-w-xs"
             placeholder="Sugar..."
-            name="sugar"
-          />
-        </div>
-        <div>
-          <div class="label">
-            <span class="label-text">Total fat</span>
-          </div>
-          <input
-            step="any"
-            type="number"
-            aria-describedby="helper-text-explanation"
-            class="input input-bordered input-sm w-full max-w-xs"
-            placeholder="Total fat..."
-            name="totalFat"
-          />
-        </div>
-        <div>
-          <div class="label">
-            <span class="label-text">Total carbonhydrate</span>
-          </div>
-          <input
-            step="any"
-            type="number"
-            aria-describedby="helper-text-explanation"
-            class="input input-bordered input-sm w-full max-w-xs"
-            placeholder="Total carbonhydrate..."
-            name="totalCarbohydrate"
-          />
-        </div>
-        <div>
-          <div class="label">
-            <span class="label-text">Vitamin D</span>
-          </div>
-          <input
-            step="any"
-            type="number"
-            aria-describedby="helper-text-explanation"
-            class="input input-bordered input-sm w-full max-w-xs"
-            placeholder="Vitamin D..."
-            name="vitaminD"
+            name="totalSugars"
           />
         </div>
       </form>
-      <button form="form1" class="btn btn-primary">
+      <div>
+        <span>
+          Rate:{" "}
+          <kbd class="kbd">
+            {calcHSRMutation.data?.data.data?.toFixed(1) ?? 0}
+          </kbd>
+        </span>
+      </div>
+      <button form="form1" class="btn btn-primary mt-auto">
         Calculate
       </button>
     </div>

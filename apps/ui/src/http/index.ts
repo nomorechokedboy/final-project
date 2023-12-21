@@ -1,13 +1,13 @@
 import axiosGlobal, { AxiosError, type CreateAxiosDefaults } from "axios";
 import { ToastMessage } from "../toast";
 import toasts from "../toast";
-import { FoodApiFactory, FoodApiFp } from "./gateway";
+import { FoodApiFactory, HSRApiFactory } from "./gateway";
 
-const baseURL = "http://localhost:5005/api/v1";
+const baseURL = "http://192.168.5.100:5005/api/v1";
 
 const conf: CreateAxiosDefaults = {
   baseURL,
-  timeout: 5000,
+  timeout: 30 * 1000,
   headers: {
     "Content-Type": "application/json",
   },
@@ -20,7 +20,7 @@ const createAxiosResponseInterceptor = () => {
     (response) => response,
     async (error) => {
       const { toastify } = toasts;
-      const id = createUUID();
+      const id = crypto.randomUUID();
       const type: ToastMessage["type"] = "error";
       let description = "Internet error";
 
@@ -68,3 +68,4 @@ const createAxiosResponseInterceptor = () => {
 createAxiosResponseInterceptor();
 
 export const FoodApi = FoodApiFactory(undefined, undefined, axios);
+export const HSRApi = HSRApiFactory(undefined, undefined, axios);

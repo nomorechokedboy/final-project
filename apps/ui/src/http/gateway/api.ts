@@ -165,19 +165,19 @@ export interface FoodFood {
    * @type {number}
    * @memberof FoodFood
    */
+  totalCarbohydrate?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof FoodFood
+   */
   totalFat?: number;
   /**
    *
    * @type {number}
    * @memberof FoodFood
    */
-  total_carbohydrate?: number;
-  /**
-   *
-   * @type {number}
-   * @memberof FoodFood
-   */
-  vitamin_d?: number;
+  vitaminD?: number;
 }
 /**
  *
@@ -280,19 +280,51 @@ export interface FoodWriteFood {
    * @type {number}
    * @memberof FoodWriteFood
    */
+  totalCarbohydrate?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof FoodWriteFood
+   */
   totalFat?: number;
   /**
    *
    * @type {number}
    * @memberof FoodWriteFood
    */
-  total_carbohydrate?: number;
+  vitaminD?: number;
+}
+/**
+ *
+ * @export
+ * @interface HsrDetectPostRequest
+ */
+export interface HsrDetectPostRequest {
+  /**
+   * HSR image
+   * @type {File}
+   * @memberof HsrDetectPostRequest
+   */
+  image: File;
+}
+/**
+ *
+ * @export
+ * @interface HsrFindHSRIntakeResp
+ */
+export interface HsrFindHSRIntakeResp {
+  /**
+   *
+   * @type {Array<HsrHSRIntake>}
+   * @memberof HsrFindHSRIntakeResp
+   */
+  data?: Array<HsrHSRIntake>;
   /**
    *
    * @type {number}
-   * @memberof FoodWriteFood
+   * @memberof HsrFindHSRIntakeResp
    */
-  vitamin_d?: number;
+  page?: number;
 }
 /**
  *
@@ -311,7 +343,7 @@ export interface HsrHSRCalcBody {
    * @type {number}
    * @memberof HsrHSRCalcBody
    */
-  concentrated_fnvl?: number;
+  concentratedFnvl?: number;
   /**
    *
    * @type {number}
@@ -347,7 +379,7 @@ export interface HsrHSRCalcBody {
    * @type {number}
    * @memberof HsrHSRCalcBody
    */
-  saturated_fat?: number;
+  saturatedFat?: number;
   /**
    *
    * @type {number}
@@ -359,7 +391,7 @@ export interface HsrHSRCalcBody {
    * @type {number}
    * @memberof HsrHSRCalcBody
    */
-  total_sugars?: number;
+  totalSugars?: number;
 }
 /**
  *
@@ -373,6 +405,171 @@ export interface HsrHSRCalcResponse {
    * @memberof HsrHSRCalcResponse
    */
   data?: number;
+}
+/**
+ *
+ * @export
+ * @interface HsrHSRDetectResp
+ */
+export interface HsrHSRDetectResp {
+  /**
+   *
+   * @type {string}
+   * @memberof HsrHSRDetectResp
+   */
+  prediction?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof HsrHSRDetectResp
+   */
+  url?: string;
+}
+/**
+ *
+ * @export
+ * @interface HsrHSRIntake
+ */
+export interface HsrHSRIntake {
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  calcium?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  calories?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof HsrHSRIntake
+   */
+  category?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  cholesterol?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  concentrated?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  fiber?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  fnvl?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  id?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof HsrHSRIntake
+   */
+  image?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  iron?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof HsrHSRIntake
+   */
+  name?: string;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  potassium?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  protein?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  rate?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  saturated?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  sodium?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  sugar?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  totalCarbohydrate?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  totalFat?: number;
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntake
+   */
+  vitaminD?: number;
+}
+/**
+ *
+ * @export
+ * @interface HsrHSRIntakeBody
+ */
+export interface HsrHSRIntakeBody {
+  /**
+   *
+   * @type {number}
+   * @memberof HsrHSRIntakeBody
+   */
+  foodId?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof HsrHSRIntakeBody
+   */
+  userId?: string;
 }
 
 /**
@@ -1061,6 +1258,175 @@ export const HSRApiAxiosParamCreator = function (
         options: localVarRequestOptions,
       };
     },
+    /**
+     * Detect food
+     * @summary Detect food
+     * @param {HsrDetectPostRequest} hsrDetectPostRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    hsrDetectPost: async (
+      hsrDetectPostRequest: HsrDetectPostRequest,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'hsrDetectPostRequest' is not null or undefined
+      assertParamExists(
+        "hsrDetectPost",
+        "hsrDetectPostRequest",
+        hsrDetectPostRequest,
+      );
+      const localVarPath = `/hsr/detect`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: "POST",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter["Content-Type"] = "application/json";
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        hsrDetectPostRequest,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * Get list hsr intake
+     * @summary Get list hsr intake api
+     * @param {string} userId UserId
+     * @param {number} [page] Page
+     * @param {number} [pageSize] Page Size
+     * @param {string} [search] Search term
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    hsrIntakesGet: async (
+      userId: string,
+      page?: number,
+      pageSize?: number,
+      search?: string,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'userId' is not null or undefined
+      assertParamExists("hsrIntakesGet", "userId", userId);
+      const localVarPath = `/hsr/intakes`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: "GET",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      if (page !== undefined) {
+        localVarQueryParameter["page"] = page;
+      }
+
+      if (pageSize !== undefined) {
+        localVarQueryParameter["pageSize"] = pageSize;
+      }
+
+      if (userId !== undefined) {
+        localVarQueryParameter["userId"] = userId;
+      }
+
+      if (search !== undefined) {
+        localVarQueryParameter["search"] = search;
+      }
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
+    /**
+     * Insert food nutrients and rate for custom HSR
+     * @summary Create food api
+     * @param {HsrHSRIntakeBody} post Create food body
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    hsrIntakesPost: async (
+      post: HsrHSRIntakeBody,
+      options: RawAxiosRequestConfig = {},
+    ): Promise<RequestArgs> => {
+      // verify required parameter 'post' is not null or undefined
+      assertParamExists("hsrIntakesPost", "post", post);
+      const localVarPath = `/hsr/intakes`;
+      // use dummy base URL string because the URL constructor only accepts absolute URLs.
+      const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+      let baseOptions;
+      if (configuration) {
+        baseOptions = configuration.baseOptions;
+      }
+
+      const localVarRequestOptions = {
+        method: "POST",
+        ...baseOptions,
+        ...options,
+      };
+      const localVarHeaderParameter = {} as any;
+      const localVarQueryParameter = {} as any;
+
+      localVarHeaderParameter["Content-Type"] = "application/json";
+
+      setSearchParams(localVarUrlObj, localVarQueryParameter);
+      let headersFromBaseOptions =
+        baseOptions && baseOptions.headers ? baseOptions.headers : {};
+      localVarRequestOptions.headers = {
+        ...localVarHeaderParameter,
+        ...headersFromBaseOptions,
+        ...options.headers,
+      };
+      localVarRequestOptions.data = serializeDataIfNeeded(
+        post,
+        localVarRequestOptions,
+        configuration,
+      );
+
+      return {
+        url: toPathString(localVarUrlObj),
+        options: localVarRequestOptions,
+      };
+    },
   };
 };
 
@@ -1102,6 +1468,105 @@ export const HSRApiFp = function (configuration?: Configuration) {
           configuration,
         )(axios, operationBasePath || basePath);
     },
+    /**
+     * Detect food
+     * @summary Detect food
+     * @param {HsrDetectPostRequest} hsrDetectPostRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async hsrDetectPost(
+      hsrDetectPostRequest: HsrDetectPostRequest,
+      options?: RawAxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<HsrHSRDetectResp>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.hsrDetectPost(
+        hsrDetectPostRequest,
+        options,
+      );
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath =
+        operationServerMap["HSRApi.hsrDetectPost"]?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
+    /**
+     * Get list hsr intake
+     * @summary Get list hsr intake api
+     * @param {string} userId UserId
+     * @param {number} [page] Page
+     * @param {number} [pageSize] Page Size
+     * @param {string} [search] Search term
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async hsrIntakesGet(
+      userId: string,
+      page?: number,
+      pageSize?: number,
+      search?: string,
+      options?: RawAxiosRequestConfig,
+    ): Promise<
+      (
+        axios?: AxiosInstance,
+        basePath?: string,
+      ) => AxiosPromise<HsrFindHSRIntakeResp>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.hsrIntakesGet(
+        userId,
+        page,
+        pageSize,
+        search,
+        options,
+      );
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath =
+        operationServerMap["HSRApi.hsrIntakesGet"]?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
+    /**
+     * Insert food nutrients and rate for custom HSR
+     * @summary Create food api
+     * @param {HsrHSRIntakeBody} post Create food body
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    async hsrIntakesPost(
+      post: HsrHSRIntakeBody,
+      options?: RawAxiosRequestConfig,
+    ): Promise<
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<HsrHSRIntake>
+    > {
+      const localVarAxiosArgs = await localVarAxiosParamCreator.hsrIntakesPost(
+        post,
+        options,
+      );
+      const index = configuration?.serverIndex ?? 0;
+      const operationBasePath =
+        operationServerMap["HSRApi.hsrIntakesPost"]?.[index]?.url;
+      return (axios, basePath) =>
+        createRequestFunction(
+          localVarAxiosArgs,
+          globalAxios,
+          BASE_PATH,
+          configuration,
+        )(axios, operationBasePath || basePath);
+    },
   };
 };
 
@@ -1131,6 +1596,57 @@ export const HSRApiFactory = function (
         .hsrCalcPost(post, options)
         .then((request) => request(axios, basePath));
     },
+    /**
+     * Detect food
+     * @summary Detect food
+     * @param {HsrDetectPostRequest} hsrDetectPostRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    hsrDetectPost(
+      hsrDetectPostRequest: HsrDetectPostRequest,
+      options?: any,
+    ): AxiosPromise<HsrHSRDetectResp> {
+      return localVarFp
+        .hsrDetectPost(hsrDetectPostRequest, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * Get list hsr intake
+     * @summary Get list hsr intake api
+     * @param {string} userId UserId
+     * @param {number} [page] Page
+     * @param {number} [pageSize] Page Size
+     * @param {string} [search] Search term
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    hsrIntakesGet(
+      userId: string,
+      page?: number,
+      pageSize?: number,
+      search?: string,
+      options?: any,
+    ): AxiosPromise<HsrFindHSRIntakeResp> {
+      return localVarFp
+        .hsrIntakesGet(userId, page, pageSize, search, options)
+        .then((request) => request(axios, basePath));
+    },
+    /**
+     * Insert food nutrients and rate for custom HSR
+     * @summary Create food api
+     * @param {HsrHSRIntakeBody} post Create food body
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    hsrIntakesPost(
+      post: HsrHSRIntakeBody,
+      options?: any,
+    ): AxiosPromise<HsrHSRIntake> {
+      return localVarFp
+        .hsrIntakesPost(post, options)
+        .then((request) => request(axios, basePath));
+    },
   };
 };
 
@@ -1152,6 +1668,63 @@ export class HSRApi extends BaseAPI {
   public hsrCalcPost(post: HsrHSRCalcBody, options?: RawAxiosRequestConfig) {
     return HSRApiFp(this.configuration)
       .hsrCalcPost(post, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * Detect food
+   * @summary Detect food
+   * @param {HsrDetectPostRequest} hsrDetectPostRequest
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof HSRApi
+   */
+  public hsrDetectPost(
+    hsrDetectPostRequest: HsrDetectPostRequest,
+    options?: RawAxiosRequestConfig,
+  ) {
+    return HSRApiFp(this.configuration)
+      .hsrDetectPost(hsrDetectPostRequest, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * Get list hsr intake
+   * @summary Get list hsr intake api
+   * @param {string} userId UserId
+   * @param {number} [page] Page
+   * @param {number} [pageSize] Page Size
+   * @param {string} [search] Search term
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof HSRApi
+   */
+  public hsrIntakesGet(
+    userId: string,
+    page?: number,
+    pageSize?: number,
+    search?: string,
+    options?: RawAxiosRequestConfig,
+  ) {
+    return HSRApiFp(this.configuration)
+      .hsrIntakesGet(userId, page, pageSize, search, options)
+      .then((request) => request(this.axios, this.basePath));
+  }
+
+  /**
+   * Insert food nutrients and rate for custom HSR
+   * @summary Create food api
+   * @param {HsrHSRIntakeBody} post Create food body
+   * @param {*} [options] Override http request option.
+   * @throws {RequiredError}
+   * @memberof HSRApi
+   */
+  public hsrIntakesPost(
+    post: HsrHSRIntakeBody,
+    options?: RawAxiosRequestConfig,
+  ) {
+    return HSRApiFp(this.configuration)
+      .hsrIntakesPost(post, options)
       .then((request) => request(this.axios, this.basePath));
   }
 }
