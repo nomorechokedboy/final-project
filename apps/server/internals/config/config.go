@@ -3,9 +3,10 @@ package config
 import "github.com/ilyakaznacheev/cleanenv"
 
 type Config struct {
-	Env           string `env:"ENV"         env-default:"dev"`
+	Env           string `env:"ENV"            env-default:"dev"`
 	DBURL         string `env:"DB_URL"`
-	HSRServiceURL string `env:"HSR_SVC_URL" env-default:"http://localhost:5000"`
+	HSRServiceURL string `env:"HSR_SVC_URL"    env-default:"http://localhost:5000"`
+	CLOUDINARYURL string `env:"CLOUDINARY_URL"`
 }
 
 func New() (*Config, error) {

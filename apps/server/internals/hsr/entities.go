@@ -38,6 +38,7 @@ type HSRIntake struct {
 	Id     int    `json:"id"`
 	UserId string `json:"-"`
 	FoodId int    `json:"-"`
+	Image  string `json:"image"`
 	food.Food
 }
 
@@ -51,6 +52,11 @@ func (i HSRIntakeBody) TableName() string {
 
 type HSRDetectBody struct {
 	Image *multipart.FileHeader
+}
+
+type HSRDetectResp struct {
+	Prediction string `json:"prediction"`
+	Url        string `json:"url"`
 }
 
 type HSRDetectResponse struct {

@@ -228,6 +228,37 @@
         }
       }
     },
+    "/hsr/detect": {
+      "post": {
+        "description": "Detect food",
+        "consumes": ["application/json"],
+        "tags": ["HSR"],
+        "summary": "Detect food",
+        "parameters": [
+          {
+            "type": "file",
+            "description": "HSR image",
+            "name": "image",
+            "in": "formData",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/hsr.HSRDetectResp"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
     "/hsr/intakes": {
       "get": {
         "description": "Get list hsr intake",
@@ -248,7 +279,7 @@
             "in": "query"
           },
           {
-            "type": "integer",
+            "type": "string",
             "description": "UserId",
             "name": "userId",
             "in": "query",
@@ -502,6 +533,17 @@
         }
       }
     },
+    "hsr.HSRDetectResp": {
+      "type": "object",
+      "properties": {
+        "prediction": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    },
     "hsr.HSRIntake": {
       "type": "object",
       "properties": {
@@ -528,6 +570,9 @@
         },
         "id": {
           "type": "integer"
+        },
+        "image": {
+          "type": "string"
         },
         "iron": {
           "type": "number"

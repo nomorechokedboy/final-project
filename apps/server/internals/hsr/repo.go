@@ -4,6 +4,7 @@ import (
 	"api/internals/config"
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -15,6 +16,11 @@ import (
 type HSRRepository interface {
 	Calc(*HSRCalcBody) (*HSRCalcResponse, error)
 	Detect(*HSRDetectBody) (*HSRDetectResponse, error)
+}
+
+type HSRIntakeRepository interface {
+	Find(*HSRIntakeQuery) ([]HSRIntake, error)
+	Insert(*HSRIntakeBody) error
 }
 
 func NewRepo(client *http.Client, conf *config.Config) HSRRepository {
@@ -66,6 +72,7 @@ func (r *HSRRepo) Calc(req *HSRCalcBody) (*HSRCalcResponse, error) {
 func (r HSRRepo) Detect(rq *HSRDetectBody) (*HSRDetectResponse, error) {
 	file, err := rq.Image.Open()
 	if err != nil {
+		log.Println("HSRRepo.Detect.Open err: ", err)
 		return nil, err
 	}
 	defer file.Close()
@@ -75,18 +82,20 @@ func (r HSRRepo) Detect(rq *HSRDetectBody) (*HSRDetectResponse, error) {
 
 	// Create a multipart writer
 	writer := multipart.NewWriter(&buffer)
-	defer writer.Close()
 
 	// Create a form file field
 	part, err := writer.CreateFormFile("image", filepath.Base(rq.Image.Filename))
 	if err != nil {
+		log.Println("HSRRepo.Detect.CreateFormFile err: ", err)
 		return nil, err
 	}
 
 	// Copy the file content to the form file field
 	if _, err = io.Copy(part, file); err != nil {
+		log.Println("HSRRepo.Detect.Copy err: ", err)
 		return nil, err
 	}
+	writer.Close()
 
 	// Perform the request
 	resp, err := r.client.Post(
@@ -95,29 +104,32 @@ func (r HSRRepo) Detect(rq *HSRDetectBody) (*HSRDetectResponse, error) {
 		&buffer,
 	)
 	if err != nil {
+		log.Println("HSRRepo.Detect.Post err: ", err)
 		return nil, err
 	}
 	defer resp.Body.Close()
 
-	// Check the response status and handle it accordingly
-	if resp.StatusCode != http.StatusOK {
+	respBuf, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("HSRRepo.Detect.ReadAll err: ", err)
 		return nil, err
 	}
 
-	respBuf, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
+	// Check the response status and handle it accordingly
+	if resp.StatusCode != http.StatusOK {
+		log.Printf(
+			"HSRRepo.Detect status code is not ok: %v. Err: %#v\n",
+			resp.StatusCode,
+			string(respBuf),
+		)
+		return nil, errors.New("Not ok")
 	}
 
 	respData := &HSRDetectResponse{}
 	if err := json.Unmarshal(respBuf, respData); err != nil {
+		log.Println("HSRRepo.Detect.Unmarshal err: ", err)
 		return nil, err
 	}
 
 	return respData, nil
-}
-
-type HSRIntakeRepository interface {
-	Find(*HSRIntakeQuery) ([]HSRIntake, error)
-	Insert(*HSRIntakeBody) error
 }

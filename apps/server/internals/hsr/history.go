@@ -18,7 +18,7 @@ type FindHSRIntakeResp struct {
 // @Accept json
 // @Param  page query int false "Page"
 // @Param  pageSize query int false "Page Size"
-// @Param  userId query int true "UserId"
+// @Param  userId query string true "UserId"
 // @Param  search query string false "Search term"
 // @Success 200 {object} FindHSRIntakeResp
 // @Failure 500 {string} string

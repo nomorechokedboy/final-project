@@ -4,9 +4,11 @@ import (
 	"api/internals/config"
 	"api/internals/food"
 	"api/internals/hsr"
+	"log"
 	"net/http"
 	"time"
 
+	"github.com/cloudinary/cloudinary-go/v2"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -54,11 +56,15 @@ func New(db *dbx.DB, conf *config.Config) *fiber.App {
 
 	foodRepo := food.NewRepo(db)
 	foodHandler := food.New(foodRepo)
+	cld, err := cloudinary.NewFromURL(conf.CLOUDINARYURL)
+	if err != nil {
+		log.Printf("CreateCloudinary err: %v. URL: %v\n", err, conf.CLOUDINARYURL)
+	}
 
 	client := &http.Client{Timeout: 30 * time.Second}
 	hsrRepo := hsr.NewRepo(client, conf)
 	hsrIntakeRepo := hsr.NewHSRIntakeRepo(db)
-	hsrHandler := hsr.New(hsrRepo, hsrIntakeRepo)
+	hsrHandler := hsr.New(hsrRepo, hsrIntakeRepo, cld)
 
 	v1 := app.Group("/api/v1")
 
@@ -71,6 +77,7 @@ func New(db *dbx.DB, conf *config.Config) *fiber.App {
 
 	hsr := v1.Group("/hsr")
 	hsr.Post("/calc", hsrHandler.Calc)
+	hsr.Post("/detect", hsrHandler.Detect)
 	hsr.Get("/intakes", hsrHandler.Find)
 	hsr.Post("/intakes", hsrHandler.Insert)
 

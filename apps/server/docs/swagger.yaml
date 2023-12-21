@@ -126,6 +126,13 @@ definitions:
       data:
         type: number
     type: object
+  hsr.HSRDetectResp:
+    properties:
+      prediction:
+        type: string
+      url:
+        type: string
+    type: object
   hsr.HSRIntake:
     properties:
       calcium:
@@ -144,6 +151,8 @@ definitions:
         type: integer
       id:
         type: integer
+      image:
+        type: string
       iron:
         type: number
       name:
@@ -344,6 +353,29 @@ paths:
       summary: Calculate food rate
       tags:
         - HSR
+  /hsr/detect:
+    post:
+      consumes:
+        - application/json
+      description: Detect food
+      parameters:
+        - description: HSR image
+          in: formData
+          name: image
+          required: true
+          type: file
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: "#/definitions/hsr.HSRDetectResp"
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Detect food
+      tags:
+        - HSR
   /hsr/intakes:
     get:
       consumes:
@@ -362,7 +394,7 @@ paths:
           in: query
           name: userId
           required: true
-          type: integer
+          type: string
         - description: Search term
           in: query
           name: search
