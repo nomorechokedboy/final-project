@@ -295,10 +295,10 @@ class HSRFoodBody(BaseModel):
     name: str
     category: str
     energy: float
-    saturated_fat: float
-    total_sugars: float
+    saturatedFat: float
+    totalSugars: float
     sodium: float
-    concentrated_fnvl: float
+    concentratedFnvl: float
     fnvl: float
     fibre: float
     protein: float
@@ -343,7 +343,7 @@ class CalcResp(BaseModel):
 
 @app.post("/api/v1/hsr/calc", tags=['HSR'], response_model=CalcResp)
 def post(foodBody: HSRFoodBody):
-    food = HSRFood(name=foodBody.name,category=foodBody.category,energy=foodBody.energy,saturated_fat=foodBody.saturated_fat,total_sugars=foodBody.total_sugars,sodium=foodBody.sodium,concentrated_fnvl=foodBody.concentrated_fnvl,fnvl=foodBody.fnvl,fibre=foodBody.fibre,protein=foodBody.protein)
+    food = HSRFood(name=foodBody.name,category=foodBody.category,energy=foodBody.energy,saturated_fat=foodBody.saturatedFat,total_sugars=foodBody.totalSugars,sodium=foodBody.sodium,concentrated_fnvl=foodBody.concentratedFnvl,fnvl=foodBody.fnvl,fibre=foodBody.fibre,protein=foodBody.protein)
     rating = get_health_star_rating(food)
     return {
         "data": rating
