@@ -44,7 +44,11 @@ export function createHistoryQuery() {
 export function createDetectMutation() {
   return createMutation(() => ({
     mutationFn(image: File) {
-      return HSRApi.hsrDetectPost({ image });
+      const formData = new FormData();
+      formData.append("image", image);
+      return HSRApi.hsrDetectPost(formData as any, {
+        Headers: { "Content-Type": "multipart/form-data" },
+      });
     },
   }));
 }

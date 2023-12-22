@@ -408,6 +408,7 @@ async def post(image: UploadFile):
     pred_probs = model.predict(img_tmp)[0]
     index = np.argmax(pred_probs)
     label = classes[index]
+    print("Detect success, resp: ", label)
 
     return {"data": label}
 

@@ -19,6 +19,7 @@ import SearchPage from "./SearchPage";
 import Toasts from "./Toasts";
 import { createDetectMutation } from "./queries";
 import FoodList from "./FoodList";
+import axios from "./http";
 
 function App() {
   const userAgent = navigator.userAgent.toLowerCase();
@@ -41,12 +42,25 @@ function App() {
     console.log("Test log");
 
     try {
-      const { data, ...test } = await getPhoto();
-      console.log(test, data);
+      const { data, format } = await getPhoto();
+      const binaryData = atob(data);
+      const arrayBuffer = new ArrayBuffer(binaryData.length);
+      const uint8Array = new Uint8Array(arrayBuffer);
+      for (var i = 0; i < binaryData.length; i++) {
+        uint8Array[i] = binaryData.charCodeAt(i);
+      }
+
+      const blob = new Blob([arrayBuffer], { type: `image/${format}` });
+
       // const uint8Array = new TextEncoder().encode(data);
-      // const blob = new Blob([uint8Array], { type: "application/octet-stream" });
-      // const image = new File([blob], "name");
-      // const res = await detectMutation.mutateAsync(image);
+      // const blob = new Blob([uint8Array], { type: "application/jpg" });
+      // const image = new File([blob], crypto.randomUUID());
+      const formData = new FormData();
+      formData.append("image", blob);
+      const res = await axios.post("/hsr/detect", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(res.data);
     } catch (e) {
       console.error("Camera err: ", JSON.stringify(e));
     }
@@ -111,7 +125,7 @@ function App() {
           </div>
         </A>
         <div class="flex items-center flex-col gap-1">
-          <button onClick={greet}>
+          <button onClick={handleCamera}>
             <CameraIcon />
           </button>
         </div>

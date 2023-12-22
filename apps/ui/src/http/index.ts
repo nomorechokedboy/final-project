@@ -67,5 +67,6 @@ const createAxiosResponseInterceptor = () => {
 
 createAxiosResponseInterceptor();
 
+export default axios;
 export const FoodApi = FoodApiFactory(undefined, undefined, axios);
 export const HSRApi = HSRApiFactory(undefined, undefined, axios);
