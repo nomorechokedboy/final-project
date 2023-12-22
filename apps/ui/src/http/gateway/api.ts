@@ -463,6 +463,12 @@ export interface HsrHSRIntake {
   concentrated?: number;
   /**
    *
+   * @type {string}
+   * @memberof HsrHSRIntake
+   */
+  createdAt?: string;
+  /**
+   *
    * @type {number}
    * @memberof HsrHSRIntake
    */
@@ -564,6 +570,12 @@ export interface HsrHSRIntakeBody {
    * @memberof HsrHSRIntakeBody
    */
   foodId?: number;
+  /**
+   *
+   * @type {string}
+   * @memberof HsrHSRIntakeBody
+   */
+  image?: string;
   /**
    *
    * @type {string}

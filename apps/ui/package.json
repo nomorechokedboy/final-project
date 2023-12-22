@@ -8,17 +8,18 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "tauri": "tauri",
-    "prepare": "husky install"
+    "tauri": "tauri"
   },
   "license": "MIT",
   "dependencies": {
+    "@felte/solid": "^1.2.11",
     "@solidjs/router": "^0.8.3",
     "@tanstack/solid-query": "^5.14.2",
     "@tauri-apps/api": "^2.0.0-alpha.4",
     "@tauri-apps/plugin-shell": "^2.0.0-alpha.0",
     "@tauri-apps/plugin-window": "^2.0.0-alpha.0",
     "axios": "^1.6.2",
+    "dayjs": "^1.11.10",
     "solid-js": "^1.7.8"
   },
   "devDependencies": {
@@ -26,7 +27,6 @@
     "@tauri-apps/cli": "^2.0.0-alpha.9",
     "autoprefixer": "^10.4.16",
     "daisyui": "latest",
-    "husky": "^8.0.0",
     "internal-ip": "^7.0.0",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.3",

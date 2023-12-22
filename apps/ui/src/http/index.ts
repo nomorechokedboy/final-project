@@ -3,7 +3,7 @@ import { ToastMessage } from "../toast";
 import toasts from "../toast";
 import { FoodApiFactory, HSRApiFactory } from "./gateway";
 
-const baseURL = "http://192.168.5.100:5005/api/v1";
+const baseURL = import.meta.env.VITE_API_URL;
 
 const conf: CreateAxiosDefaults = {
   baseURL,

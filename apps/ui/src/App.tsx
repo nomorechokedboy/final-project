@@ -17,9 +17,15 @@ import { getPhoto } from "./camera";
 import { invoke } from "@tauri-apps/api";
 import SearchPage from "./SearchPage";
 import Toasts from "./Toasts";
-import { createDetectMutation } from "./queries";
+import {
+  createDetectMutation,
+  createHistoryQuery,
+  createInsertIntake,
+} from "./queries";
 import FoodList from "./FoodList";
 import axios from "./http";
+import { HsrHSRDetectResp } from "./http/gateway";
+import LoadingOverlay from "./LoadingOverlay";
 
 function App() {
   const userAgent = navigator.userAgent.toLowerCase();
@@ -28,8 +34,13 @@ function App() {
   const [greetMsg, setGreetMsg] = createSignal("");
   const [searchTerm, setSearchTerm] = createSignal("");
   const [name, setName] = createSignal("");
+  const [isTracking, setIsTracking] = createSignal(false);
+  const [pred, setPred] = createSignal("");
+  const [imgUrl, setImgUrl] = createSignal("");
+  const [loading, setLoading] = createSignal(false);
   const navigate = useNavigate();
-  const detectMutation = createDetectMutation();
+  const insertIntakeMutation = createInsertIntake();
+  const historyQuery = createHistoryQuery();
   const [_, setSearchParams] = useSearchParams();
   let dialog: HTMLDialogElement | undefined;
 
@@ -39,8 +50,6 @@ function App() {
   }
 
   async function handleCamera() {
-    console.log("Test log");
-
     try {
       const { data, format } = await getPhoto();
       const binaryData = atob(data);
@@ -54,15 +63,38 @@ function App() {
 
       // const uint8Array = new TextEncoder().encode(data);
       // const blob = new Blob([uint8Array], { type: "application/jpg" });
-      // const image = new File([blob], crypto.randomUUID());
+      const image = new File([blob], crypto.randomUUID());
       const formData = new FormData();
-      formData.append("image", blob);
-      const res = await axios.post("/hsr/detect", formData, {
+      formData.append("image", image);
+      setLoading(true);
+      const res = await axios.post<HsrHSRDetectResp>("/hsr/detect", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log(res.data);
+      if (res.data.url !== undefined && res.data.prediction !== undefined) {
+        setPred(res.data.prediction);
+        setImgUrl(res.data.url);
+        setIsTracking(true);
+      }
     } catch (e) {
       console.error("Camera err: ", JSON.stringify(e));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleSelectIntake(foodId: number) {
+    try {
+      const userId = localStorage.getItem("uid")!;
+      await insertIntakeMutation.mutateAsync({
+        foodId,
+        userId,
+        image: imgUrl(),
+      });
+      historyQuery.refetch();
+    } catch (err) {
+      console.error("handleSelectIntake err: ", err);
+    } finally {
+      setIsTracking(false);
     }
   }
 
@@ -74,14 +106,17 @@ function App() {
   });
 
   createEffect(() => {
-    setSearchParams({ q: "Cheese" });
-    dialog?.showModal();
+    if (isTracking()) {
+      setSearchParams({ q: pred() });
+      dialog?.showModal();
+    } else {
+      dialog?.close();
+    }
   });
 
   return (
     <div class="flex flex-col h-screen relative">
       <header class="flex items-center flex-shrink-0 p-5 gap-2">
-        <LogoutIcon />
         <div class="flex-1 text-center">
           <form
             onSubmit={(e) => {
@@ -97,7 +132,6 @@ function App() {
             />
           </form>
         </div>
-        <LogoutIcon />
       </header>
       <main class="flex-1 overflow-auto no-scrollbar">
         <Routes>
@@ -113,7 +147,7 @@ function App() {
               </button>
             </form>
             <div class="flex flex-col gap-3 py-5">
-              <FoodList />
+              <FoodList onClick={handleSelectIntake} />
             </div>
           </div>
         </dialog>
@@ -138,6 +172,7 @@ function App() {
       <div class="absolute top-20 right-5">
         <Toasts />
       </div>
+      <LoadingOverlay open={loading()} />
     </div>
   );
 }

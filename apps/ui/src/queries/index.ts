@@ -1,7 +1,7 @@
 import { createInfiniteQuery, createMutation } from "@tanstack/solid-query";
 import { FoodApi, HSRApi } from "../http";
 import { useSearchParams } from "@solidjs/router";
-import { HsrHSRCalcBody } from "../http/gateway";
+import { HsrHSRCalcBody, HsrHSRIntakeBody } from "../http/gateway";
 
 export function createFindFoods() {
   const [searchParams] = useSearchParams();
@@ -26,7 +26,7 @@ export function createHistoryQuery() {
   const uid = localStorage.getItem("uid");
 
   return createInfiniteQuery(() => ({
-    queryKey: ["history"],
+    queryKey: ["history", uid],
     initialPageParam: 1,
     queryFn({ pageParam }) {
       return HSRApi.hsrIntakesGet(uid!, pageParam, undefined, undefined);
@@ -58,5 +58,16 @@ export function createCalcHSRMutation() {
     mutationFn(body: HsrHSRCalcBody) {
       return HSRApi.hsrCalcPost(body);
     },
+  }));
+}
+
+export function createInsertIntake() {
+  const uid = localStorage.getItem("uid");
+
+  return createMutation(() => ({
+    mutationFn(req: HsrHSRIntakeBody) {
+      return HSRApi.hsrIntakesPost(req);
+    },
+    mutationKey: ["history", uid],
   }));
 }

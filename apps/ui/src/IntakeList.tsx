@@ -1,10 +1,13 @@
 import { For, Show } from "solid-js";
 import { createHistoryQuery } from "./queries";
+import { FromNow } from "./utils";
+import dayjs from "dayjs";
+import Nutrients from "./Nutrients";
+import Badge from "./Badge";
 
 export default function IntakeList() {
   const historyQuery = createHistoryQuery();
   const isEmpty = () => historyQuery.data?.pages[0].data.data?.length === 0;
-  console.log({ isEmpty: isEmpty() });
 
   return (
     <div class="flex gap-5 flex-col p-5">
@@ -15,14 +18,29 @@ export default function IntakeList() {
               {(intake) => (
                 <div class="card card-side bg-base-100 shadow-xl">
                   <figure class="flex-[0.5]">
-                    <img
-                      src="https://images.squarespace-cdn.com/content/v1/5637e7e2e4b0a5cbcf21d677/1554268978648-5KN32GXX1F5VDR5IE99H/image-asset.jpeg?format=2500w"
-                      alt="Movie"
-                    />
+                    <img src={intake.image} alt="Intake image" />
                   </figure>
-                  <div class="card-body flex-[0.5]">
-                    <h2 class="card-title">Today intake</h2>
-                    <p>This will be charts in the future</p>
+                  <div class="card-body flex-[0.5] flex flex-col">
+                    <h2 class="card-title">{intake.name}</h2>
+                    <Nutrients
+                      calcium={intake.calcium}
+                      calories={intake.calories}
+                      cholesterol={intake.cholesterol}
+                      fiber={intake.fiber}
+                      iron={intake.iron}
+                      potassium={intake.potassium}
+                      protein={intake.protein}
+                      saturated={intake.saturated}
+                      sodium={intake.sodium}
+                      sugar={intake.sugar}
+                      totalCarbohydrate={intake.totalCarbohydrate}
+                      totalFat={intake.totalFat}
+                      vitaminD={intake.vitaminD}
+                    />
+                    <Badge>{intake.rate?.toFixed(1)}</Badge>
+                    <div class="stat-desc mt-auto">
+                      {FromNow(intake.createdAt ?? dayjs().toString())}
+                    </div>
                   </div>
                 </div>
               )}
@@ -43,12 +61,6 @@ export default function IntakeList() {
             <h1 class="text-gray-700 font-medium text-2xl text-center mb-3">
               No Data
             </h1>
-            <p class="text-gray-500 text-center mb-6"></p>
-            <div class="flex flex-col justify-center">
-              <button class="btn btn-primary btn-sm">
-                Track your meals now
-              </button>
-            </div>
           </div>
         </div>
       </Show>

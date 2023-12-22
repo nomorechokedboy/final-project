@@ -1,10 +1,11 @@
+import Badge from "./Badge";
 import { createCalcHSRMutation } from "./queries";
 
 export default function HSRCalc() {
   const calcHSRMutation = createCalcHSRMutation();
 
   return (
-    <div class="flex gap-5 flex-col p-5">
+    <div class="flex gap-5 flex-col p-5 h-full">
       <form
         id="form1"
         class="grid grid-cols-2 gap-5"
@@ -23,18 +24,12 @@ export default function HSRCalc() {
             "totalSugars",
           ];
           formData.forEach((val, key) => {
-            console.log({
-              test: numberFields.includes(key) !== undefined,
-              key,
-            });
-
             if (numberFields.includes(key)) {
               body[key] = parseFloat(val.toString()) as any;
             } else {
               body[key] = val;
             }
           });
-          console.log({ body });
 
           try {
             await calcHSRMutation.mutateAsync(body);
@@ -179,9 +174,7 @@ export default function HSRCalc() {
       <div>
         <span>
           Rate:{" "}
-          <kbd class="kbd">
-            {calcHSRMutation.data?.data.data?.toFixed(1) ?? 0}
-          </kbd>
+          <Badge>{calcHSRMutation.data?.data.data?.toFixed(1) ?? 0}</Badge>
         </span>
       </div>
       <button form="form1" class="btn btn-primary mt-auto">
