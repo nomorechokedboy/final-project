@@ -608,6 +608,9 @@ const docTemplate = `{
                 "concentrated": {
                     "type": "integer"
                 },
+                "createdAt": {
+                    "type": "string"
+                },
                 "fiber": {
                     "type": "number"
                 },
@@ -660,6 +663,9 @@ const docTemplate = `{
             "properties": {
                 "foodId": {
                     "type": "integer"
+                },
+                "image": {
+                    "type": "string"
                 },
                 "userId": {
                     "type": "string"

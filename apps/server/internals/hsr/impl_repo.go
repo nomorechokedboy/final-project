@@ -14,6 +14,9 @@ func (r *HSRIntakeRepo) Find(query *HSRIntakeQuery) ([]HSRIntake, error) {
 	resp := make([]HSRIntake, 0, query.GetPageSize())
 	q := r.db.Select(
 		"hsr_intakes.id as id",
+		"hsr_intakes.user_id as user_id",
+		"hsr_intakes.image as image",
+		"hsr_intakes.created_at as created_at",
 		"food.id as food_id",
 		"food.name as name",
 		"food.calories as calories",

@@ -4,6 +4,7 @@ import (
 	"api/internals/common"
 	"api/internals/food"
 	"mime/multipart"
+	"time"
 )
 
 type HSRCalcBody struct {
@@ -32,13 +33,15 @@ type HSRIntakeQuery struct {
 type HSRIntakeBody struct {
 	UserId string `json:"userId"`
 	FoodId int    `json:"foodId"`
+	Image  string `json:"image"`
 }
 
 type HSRIntake struct {
-	Id     int    `json:"id"`
-	UserId string `json:"-"`
-	FoodId int    `json:"-"`
-	Image  string `json:"image"`
+	Id        int       `json:"id"`
+	UserId    string    `json:"-"`
+	FoodId    int       `json:"-"`
+	Image     string    `json:"image"`
+	CreatedAt time.Time `json:"createdAt"`
 	food.Food
 }
 

@@ -145,6 +145,8 @@ definitions:
         type: number
       concentrated:
         type: integer
+      createdAt:
+        type: string
       fiber:
         type: number
       fnvl:
@@ -180,6 +182,8 @@ definitions:
     properties:
       foodId:
         type: integer
+      image:
+        type: string
       userId:
         type: string
     type: object

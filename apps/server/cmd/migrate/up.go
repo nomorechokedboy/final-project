@@ -51,9 +51,11 @@ func UpCmd() *cobra.Command {
 			}
 
 			hsrIntakes := map[string]string{
-				"id":      "INTEGER PRIMARY KEY AUTOINCREMENT",
-				"food_id": "INTEGER NOT NULL REFERENCES food_rate_nutrients(id)",
-				"user_id": "TEXT",
+				"id":         "INTEGER PRIMARY KEY AUTOINCREMENT",
+				"food_id":    "INTEGER NOT NULL REFERENCES food_rate_nutrients(id)",
+				"user_id":    "TEXT",
+				"image":      "TEXT",
+				"created_at": "DATETIME DEFAULT CURRENT_TIMESTAMP",
 			}
 			if _, err := db.CreateTable("hsr_intakes", hsrIntakes).Execute(); err != nil {
 				log.Panicln("MigrateUp.CreateTable err: ", err)

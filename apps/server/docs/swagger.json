@@ -562,6 +562,9 @@
         "concentrated": {
           "type": "integer"
         },
+        "createdAt": {
+          "type": "string"
+        },
         "fiber": {
           "type": "number"
         },
@@ -614,6 +617,9 @@
       "properties": {
         "foodId": {
           "type": "integer"
+        },
+        "image": {
+          "type": "string"
         },
         "userId": {
           "type": "string"
