@@ -1,7 +1,11 @@
 import { createInfiniteQuery, createMutation } from "@tanstack/solid-query";
 import { FoodApi, HSRApi } from "../http";
 import { useSearchParams } from "@solidjs/router";
-import { HsrHSRCalcBody, HsrHSRIntakeBody } from "../http/gateway";
+import {
+  FoodWriteFood,
+  HsrHSRCalcBody,
+  HsrHSRIntakeBody,
+} from "../http/gateway";
 
 export function createFindFoods() {
   const [searchParams] = useSearchParams();
@@ -69,5 +73,13 @@ export function createInsertIntake() {
       return HSRApi.hsrIntakesPost(req);
     },
     mutationKey: ["history", uid],
+  }));
+}
+
+export function createFoodMutation() {
+  return createMutation(() => ({
+    mutationFn(req: FoodWriteFood) {
+      return FoodApi.foodsPost(req);
+    },
   }));
 }
