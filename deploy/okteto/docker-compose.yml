@@ -1,17 +1,5 @@
 version: "3.8"
 services:
-  python_server:
-    image: nomorechokedboy/web-project:python-food
-    ports:
-      - "5000:5000"
-    healthcheck:
-      test: ["CMD", "/usr/bin/curl", "http://localhost:5000/healthz"]
-      interval: 1m30s
-      timeout: 30s
-      retries: 5
-      start_period: 30s
-    restart: always
-
   server:
     command: serve
     depends_on:
@@ -35,6 +23,18 @@ services:
           "--spider",
           "http://localhost:5005/healthz",
         ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    restart: always
+
+  python-server:
+    image: nomorechokedboy/web-project:python-food
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "/usr/bin/curl", "http://localhost:5000/healthz"]
       interval: 1m30s
       timeout: 30s
       retries: 5
