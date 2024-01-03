@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  python_server:
+    image: nomorechokedboy/web-project:python-food
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "/usr/bin/curl", "http://localhost:5000/healthz"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    restart: always
+
+  server:
+    command: serve
+    environment:
+      - ENV=prod
+      - DB_URL=${DB_URL}
+      - CLOUDINARY_URL=${CLOUDINARY_URL}
+      - HSR_SVC_URL=http://python_server:5000
+    image: nomorechokedboy/web-project:go-food
+    ports:
+      - "5005:5005"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/usr/bin/wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:5005/healthz",
+        ]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+    restart: always
