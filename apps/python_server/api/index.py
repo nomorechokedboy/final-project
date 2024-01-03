@@ -11,7 +11,7 @@ import operator
 from keras.preprocessing import image
 from keras.models import load_model
 
-model_path = os.path.dirname(__file__) + '/fine_tune_model_trained.hdf5'
+model_path = os.path.dirname(__file__) + '/fine_tune_model_best.hdf5'
 model = load_model(model_path, compile=False)
 
 class HSRFood:
@@ -392,8 +392,12 @@ classes = [
     "Waffle",
 ]
 
+class DetectResponse(BaseModel):
+    result: str
+    prob: float
+
 class DetectResp(BaseModel):
-    data: str 
+    data: DetectResponse
 
 @app.post("/api/v1/hsr/detect", tags=['HSR'], response_model=DetectResp)
 async def post(image: UploadFile):
@@ -406,11 +410,11 @@ async def post(image: UploadFile):
     os.remove('./tmp.jpg')
     model = load_model(model_path)
     pred_probs = model.predict(img_tmp)[0]
-    index = np.argmax(pred_probs)
-    label = classes[index]
-    print("Detect success, resp: ", label)
+    max_index = np.argmax(pred_probs)
+    label = classes[max_index]
+    print("Detect success, resp: ", label, pred_probs[max_index])
 
-    return {"data": label}
+    return {"data": {"result": label, "prob": pred_probs[max_index]}}
 
 def preprocess_image(img_path):
     img = image.load_img(img_path, target_size=(300, 300))
