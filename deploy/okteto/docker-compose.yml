@@ -14,6 +14,9 @@ services:
 
   server:
     command: serve
+    depends_on:
+      python_server:
+        condition: service_healthy
     environment:
       - ENV=prod
       - DB_URL=${DB_URL}
