@@ -2,9 +2,9 @@ version: "3.8"
 services:
   api:
     command: serve
-    depends_on:
-      python_server:
-        condition: service_healthy
+    # depends_on:
+    #   python-server:
+    #     condition: service_healthy
     environment:
       - ENV=prod
       - DB_URL=${DB_URL}
