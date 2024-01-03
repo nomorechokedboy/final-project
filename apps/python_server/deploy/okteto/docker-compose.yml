@@ -1,7 +1,9 @@
 version: "3.8"
 services:
   api:
-    image: ghcr.io/nomorechokedboy/python-food
+    build:
+      context: ../../
+      dockerfile: ../../Dockerfile
     ports:
       - "5000:5000"
     healthcheck:
